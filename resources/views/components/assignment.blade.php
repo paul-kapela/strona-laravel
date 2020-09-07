@@ -7,11 +7,12 @@
     </h6>
 
     @if($multilang)
-        @if()
+        <h6>{{ __('language.pl') }}</h6>
         {!! $assignment->content_pl !!}
 
         <hr>
 
+        <h6>{{ __('language.en') }}</h6>
         {!! $assignment->content_en !!}
     @else
         {!! $assignment->content() !!}
