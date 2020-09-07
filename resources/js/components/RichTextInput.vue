@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="mb-1" v-if="multilang || (language == 'pl')">
-            PL
+            <span v-if="multilang">PL</span>
 
             <quill-editor
                 ref="quillEditorPl"
@@ -14,7 +14,7 @@
         </div>
 
         <div v-if="multilang || (language == 'en')">
-            EN
+            <span v-if="multilang">EN</span>
 
             <quill-editor
                 ref="quillEditorEn"
