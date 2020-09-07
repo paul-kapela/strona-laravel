@@ -2165,6 +2165,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 var _window = window,
     mathquill4quill = _window.mathquill4quill;
@@ -2223,8 +2230,14 @@ var _window = window,
   },
   mounted: function mounted() {
     var enableMathQuillFormulaAuthoring = mathquill4quill();
-    enableMathQuillFormulaAuthoring(this.editorPl);
-    enableMathQuillFormulaAuthoring(this.editorEn);
+
+    if (this.language == 'pl' || this.multilang) {
+      enableMathQuillFormulaAuthoring(this.editorPl);
+    }
+
+    if (this.language == 'en' || this.multilang) {
+      enableMathQuillFormulaAuthoring(this.editorEn);
+    }
   }
 });
 
@@ -77483,67 +77496,80 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("quill-editor", {
-        ref: "quillEditorPl",
-        attrs: { options: _vm.editorOption },
-        on: {
-          change: function($event) {
-            return _vm.onEditorChange($event)
-          }
-        },
-        model: {
-          value: _vm.content_pl,
-          callback: function($$v) {
-            _vm.content_pl = $$v
-          },
-          expression: "content_pl"
-        }
-      }),
-      _vm._v(" "),
-      _c("input", {
-        attrs: {
-          type: "text",
-          id: "content_pl",
-          name: "content_pl",
-          hidden: ""
-        },
-        domProps: { value: _vm.contentPl }
-      }),
-      _vm._v(" "),
-      _vm.multilang
-        ? _c("quill-editor", {
-            ref: "quillEditorEn",
-            attrs: { options: _vm.editorOption },
-            on: {
-              change: function($event) {
-                return _vm.onEditorChange($event)
-              }
-            },
-            model: {
-              value: _vm.content_en,
-              callback: function($$v) {
-                _vm.content_en = $$v
+  return _c("div", [
+    _vm.multilang || _vm.language == "pl"
+      ? _c(
+          "div",
+          { staticClass: "mb-1" },
+          [
+            _vm._v("\n        PL\n\n        "),
+            _c("quill-editor", {
+              ref: "quillEditorPl",
+              attrs: { options: _vm.editorOption },
+              on: {
+                change: function($event) {
+                  return _vm.onEditorChange($event)
+                }
               },
-              expression: "content_en"
-            }
-          })
-        : _vm._e(),
-      _vm._v(" "),
-      _c("input", {
-        attrs: {
-          type: "text",
-          id: "content_en",
-          name: "content_en",
-          hidden: ""
-        },
-        domProps: { value: _vm.contentEn }
-      })
-    ],
-    1
-  )
+              model: {
+                value: _vm.contentPl,
+                callback: function($$v) {
+                  _vm.contentPl = $$v
+                },
+                expression: "contentPl"
+              }
+            }),
+            _vm._v(" "),
+            _c("input", {
+              attrs: {
+                type: "text",
+                id: "content_pl",
+                name: "content_pl",
+                hidden: ""
+              },
+              domProps: { value: _vm.contentPl }
+            })
+          ],
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.multilang || _vm.language == "en"
+      ? _c(
+          "div",
+          [
+            _vm._v("\n        EN\n\n        "),
+            _c("quill-editor", {
+              ref: "quillEditorEn",
+              attrs: { options: _vm.editorOption },
+              on: {
+                change: function($event) {
+                  return _vm.onEditorChange($event)
+                }
+              },
+              model: {
+                value: _vm.contentEn,
+                callback: function($$v) {
+                  _vm.contentEn = $$v
+                },
+                expression: "contentEn"
+              }
+            }),
+            _vm._v(" "),
+            _c("input", {
+              attrs: {
+                type: "text",
+                id: "content_en",
+                name: "content_en",
+                hidden: ""
+              },
+              domProps: { value: _vm.contentEn }
+            })
+          ],
+          1
+        )
+      : _vm._e()
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -90061,14 +90087,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!***************************************************!*\
   !*** ./resources/js/components/RichTextInput.vue ***!
   \***************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _RichTextInput_vue_vue_type_template_id_ee522f74___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RichTextInput.vue?vue&type=template&id=ee522f74& */ "./resources/js/components/RichTextInput.vue?vue&type=template&id=ee522f74&");
 /* harmony import */ var _RichTextInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RichTextInput.vue?vue&type=script&lang=js& */ "./resources/js/components/RichTextInput.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _RichTextInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _RichTextInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -90098,7 +90125,7 @@ component.options.__file = "resources/js/components/RichTextInput.vue"
 /*!****************************************************************************!*\
   !*** ./resources/js/components/RichTextInput.vue?vue&type=script&lang=js& ***!
   \****************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

@@ -85,8 +85,8 @@ class AssignmentsController extends Controller
         $user = auth()->user();
 
         $data = request()->validate([
-            'content_pl' => 'required',
-            'content_en' => 'required',
+            'content_pl' => 'required_without:content_en',
+            'content_en' => 'required_without:content_pl',
             'image-upload-token' => 'required',
             'subject' => 'required',
             'grade' => 'required',
@@ -95,8 +95,8 @@ class AssignmentsController extends Controller
         $attachments = save_images($data['image-upload-token']);
 
         $assignment = new Assignment();
-        $assignment->content_pl = $data['content_pl'];
-        $assignment->content_en = $data['content_en'];
+        $assignment->content_pl = array_key_exists('content_pl', $data) ? $data['content_pl'] : '';
+        $assignment->content_en = array_key_exists('content_en', $data) ? $data['content_en'] : '';
         $assignment->image_upload_token = $data['image-upload-token'];
         $assignment->attachments = serialize($attachments);
         $assignment->user()->associate($user);

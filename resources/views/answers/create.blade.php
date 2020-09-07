@@ -13,7 +13,8 @@
 
                 <div class="card-body">
                     @component('components/assignment', [
-                        'assignment' => $assignment
+                        'assignment' => $assignment,
+                        'multilang' => true
                     ])
                     @endcomponent
 

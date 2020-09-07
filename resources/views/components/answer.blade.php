@@ -4,7 +4,15 @@
         {{ __('content.date') }}: {{ $answer->created_at }} <br/>
     </h6>
 
-    {!! $answer->content() !!}
+    @if($multilang)
+        {!! $assignment->content_pl !!}
+
+        <hr>
+
+        {!! $assignment->content_en !!}
+    @else
+        {!! $assignment->content() !!}
+    @endif
 
     @component('components/images', [
         'images' => unserialize($answer->attachments)

@@ -19,7 +19,8 @@
 
                 <div class="card-body">
                     @component('components/assignment', [
-                        'assignment' => $assignment
+                        'assignment' => $assignment,
+                        'multilang' => policy(\App\Answer::class)->create(Auth::user())
                     ])
                     @endcomponent
 
@@ -36,7 +37,8 @@
                     @if($assignment->answers()->get()->first())
                         @foreach($assignment->answers()->get() as $answer)
                             @component('components/answer', [
-                                'answer' => $answer
+                                'answer' => $answer,
+                                'multilang' => policy(\App\Answer::class)->create(Auth::user())
                             ])
                             @endcomponent
 

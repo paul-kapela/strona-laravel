@@ -1,23 +1,30 @@
 <template>
     <div>
-        <quill-editor
-            ref="quillEditorPl"
-            v-model="content_pl"
-            :options="editorOption"
-            @change="onEditorChange($event)"
-        />
+        <div class="mb-1" v-if="multilang || (language == 'pl')">
+            PL
 
-        <input type="text" id="content_pl" name="content_pl" :value="contentPl" hidden>
+            <quill-editor
+                ref="quillEditorPl"
+                v-model="contentPl"
+                :options="editorOption"
+                @change="onEditorChange($event)"
+            />
 
-        <quill-editor
-            ref="quillEditorEn"
-            v-model="content_en"
-            v-if="multilang"
-            :options="editorOption"
-            @change="onEditorChange($event)"
-        />
+            <input type="text" id="content_pl" name="content_pl" :value="contentPl" hidden>
+        </div>
 
-        <input type="text" id="content_en" name="content_en" :value="contentEn" hidden>
+        <div v-if="multilang || (language == 'en')">
+            EN
+
+            <quill-editor
+                ref="quillEditorEn"
+                v-model="contentEn"
+                :options="editorOption"
+                @change="onEditorChange($event)"
+            />
+
+            <input type="text" id="content_en" name="content_en" :value="contentEn" hidden>
+        </div>
     </div>
 </template>
 
@@ -78,8 +85,14 @@ export default {
     },
     mounted() {
         const enableMathQuillFormulaAuthoring = mathquill4quill();
-        enableMathQuillFormulaAuthoring(this.editorPl);
-        enableMathQuillFormulaAuthoring(this.editorEn);
+
+        if (this.language == 'pl' || this.multilang) {
+            enableMathQuillFormulaAuthoring(this.editorPl);
+        }
+
+        if (this.language == 'en' || this.multilang) {
+            enableMathQuillFormulaAuthoring(this.editorEn);
+        }
     }
 }
 </script>

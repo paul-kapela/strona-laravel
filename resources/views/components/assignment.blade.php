@@ -6,7 +6,16 @@
         {{ __('content.date') }}: {{ $assignment->created_at }}
     </h6>
 
-    {!! $assignment->content() !!}
+    @if($multilang)
+        @if()
+        {!! $assignment->content_pl !!}
+
+        <hr>
+
+        {!! $assignment->content_en !!}
+    @else
+        {!! $assignment->content() !!}
+    @endif
 
     @component('components/images', [
         'images' => unserialize($assignment->attachments)
