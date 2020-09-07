@@ -14,7 +14,7 @@
         </div>
 
         <div v-if="multilang || (language == 'en')">
-            <span v-if="multilang">EN</span>
+            <span v-if="multilang">{{ language == 'pl' ? 'Angielski' : 'English' }}</span>
 
             <quill-editor
                 ref="quillEditorEn"
