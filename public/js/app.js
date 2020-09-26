@@ -1929,11 +1929,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 
-var token = $('meta[name="csrf-token"]').attr('content');
+var token = document.querySelector('meta[name="csrf-token"]').content;
 var pl = {
   "dictDefaultMessage": "Przeciągnij tutaj zdjęcia, które&nbsp;chcesz przesłać",
   "dictFallbackMessage": "Twoja przeglądarka nie obsługuje przesyłania plików za pomocą przeciągnięcia i&nbsp;upuszczenia.",
@@ -1964,12 +1972,12 @@ var en = {
   components: {
     vueDropzone: vue2_dropzone__WEBPACK_IMPORTED_MODULE_2___default.a
   },
-  props: ['existingAssignmentId', 'attachments', 'existingImageUploadToken', 'language'],
+  props: ['uploadUrl', 'existingAssignmentId', 'attachments', 'language'],
   data: function data() {
     return {
       imageUploadToken: 0,
       dropzoneOptions: _objectSpread(_objectSpread({
-        url: "/imageUpload",
+        url: this.uploadUrl,
         paramName: "image",
         headers: {
           "X-CSRF-TOKEN": token
@@ -1980,8 +1988,6 @@ var en = {
         acceptedFiles: ".jpeg,.jpg,.png"
       }, this.language === 'pl' ? pl : en), {}, {
         init: function init() {
-          if (this.attachments) {}
-
           this.on("sending", function (file, xhr, formData) {
             formData.append('token', document.getElementById('image-upload-token').value);
           });
@@ -1989,28 +1995,45 @@ var en = {
             file.filename = response.filename;
           });
           this.on("removedfile", function (file) {
-            axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"](this.url, {
+            axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"](document.getElementById('uploadUrl').value, {
               headers: {
                 "X-CSRF-TOKEN": token
               },
               data: {
                 token: document.getElementById('image-upload-token').value,
-                filename: file.filename
+                filename: file.name
               }
+            }).then(function (response) {
+              if (response.status == 200) {}
+            })["catch"](function (error) {
+              console.log(error);
             });
           });
+        },
+        error: function error(file, response) {
+          console.log(response);
         }
       })
     };
   },
+  methods: {
+    emit: function emit(event, value) {
+      this.$root.$emit(event, value);
+    }
+  },
   mounted: function mounted() {
-    if (this.existingImageUploadToken) {
-      this.imageUploadToken = this.existingImageUploadToken;
-      this.dropzoneOptions.url = "/assignments/".concat(this.existingAssignmentId, "/imageUpload");
-      console.log(this.dropzoneOptions.url);
-      console.log(this.imageUploadToken);
-    } else {
-      this.imageUploadToken = Object(uuid__WEBPACK_IMPORTED_MODULE_1__["v4"])();
+    var _this = this;
+
+    this.imageUploadToken = Object(uuid__WEBPACK_IMPORTED_MODULE_1__["v4"])();
+
+    if (this.attachments) {
+      var attachments = JSON.parse(this.attachments);
+      attachments.forEach(function (attachment) {
+        _this.$refs.dropzone.manuallyAddFile({
+          "name": attachment.name,
+          "size": attachment.size
+        }, "".concat(window.location.origin, "/storage/app/").concat(attachment.url));
+      });
     }
   }
 });
@@ -2259,12 +2282,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['language'],
+  props: ['language', 'editing'],
   mounted: function mounted() {
     var _this = this;
 
     this.$root.$on('content_exists', function (exists) {
       _this.$refs.submitButton.disabled = !exists;
+    });
+    this.$root.$on('attachments_exist', function (exists) {
+      if (_this.editing) {
+        _this.$refs.submitButton.disabled = !exists;
+      }
     });
   }
 });
@@ -77367,7 +77395,15 @@ var render = function() {
     [
       _c("vue-dropzone", {
         ref: "dropzone",
-        attrs: { id: "dropzone", options: _vm.dropzoneOptions }
+        attrs: { id: "dropzone", options: _vm.dropzoneOptions },
+        on: {
+          "vdropzone-success": function($event) {
+            return _vm.emit("attachments_exist", true)
+          },
+          "vdropzone-removed-file": function($event) {
+            return _vm.emit("attachments_exist", true)
+          }
+        }
       }),
       _vm._v(" "),
       _c("input", {
@@ -77377,6 +77413,11 @@ var render = function() {
           hidden: ""
         },
         domProps: { value: _vm.imageUploadToken }
+      }),
+      _vm._v(" "),
+      _c("input", {
+        attrs: { id: "uploadUrl", hidden: "" },
+        domProps: { value: _vm.dropzoneOptions.url }
       })
     ],
     1
@@ -77502,7 +77543,12 @@ var render = function() {
           "div",
           { staticClass: "mb-1" },
           [
-            _vm._v("\n        PL\n\n        "),
+            _vm.multilang
+              ? _c("span", [
+                  _vm._v(_vm._s(_vm.language == "pl" ? "Polski" : "Polish"))
+                ])
+              : _vm._e(),
+            _vm._v(" "),
             _c("quill-editor", {
               ref: "quillEditorPl",
               attrs: { options: _vm.editorOption },
@@ -77538,7 +77584,12 @@ var render = function() {
       ? _c(
           "div",
           [
-            _vm._v("\n        EN\n\n        "),
+            _vm.multilang
+              ? _c("span", [
+                  _vm._v(_vm._s(_vm.language == "pl" ? "Angielski" : "English"))
+                ])
+              : _vm._e(),
+            _vm._v(" "),
             _c("quill-editor", {
               ref: "quillEditorEn",
               attrs: { options: _vm.editorOption },
@@ -90087,15 +90138,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!***************************************************!*\
   !*** ./resources/js/components/RichTextInput.vue ***!
   \***************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _RichTextInput_vue_vue_type_template_id_ee522f74___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RichTextInput.vue?vue&type=template&id=ee522f74& */ "./resources/js/components/RichTextInput.vue?vue&type=template&id=ee522f74&");
 /* harmony import */ var _RichTextInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RichTextInput.vue?vue&type=script&lang=js& */ "./resources/js/components/RichTextInput.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _RichTextInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _RichTextInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -90125,7 +90175,7 @@ component.options.__file = "resources/js/components/RichTextInput.vue"
 /*!****************************************************************************!*\
   !*** ./resources/js/components/RichTextInput.vue?vue&type=script&lang=js& ***!
   \****************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

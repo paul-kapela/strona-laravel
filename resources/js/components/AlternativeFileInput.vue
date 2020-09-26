@@ -1,8 +1,16 @@
 <template>
     <div>
-        <vue-dropzone id="dropzone" ref="dropzone" :options="dropzoneOptions"/>
+        <vue-dropzone
+            id="dropzone"
+            ref="dropzone"
+            :options="dropzoneOptions"
+            v-on:vdropzone-success="emit('attachments_exist', true)"
+            v-on:vdropzone-removed-file="emit('attachments_exist', true)"
+        />
 
         <input id="image-upload-token" name="image-upload-token" :value="imageUploadToken" hidden>
+
+        <input id="uploadUrl" :value="dropzoneOptions.url" hidden>
     </div>
 </template>
 
@@ -12,7 +20,7 @@ import { v4 as uuid_v4 } from "uuid";
 import vue2Dropzone from "vue2-dropzone";
 import "vue2-dropzone/dist/vue2Dropzone.min.css";
 
-const token = $('meta[name="csrf-token"]').attr('content');
+const token = document.querySelector('meta[name="csrf-token"]').content;
 
 const pl = {
     "dictDefaultMessage": "Przeciągnij tutaj zdjęcia, które&nbsp;chcesz przesłać",
@@ -47,16 +55,16 @@ export default {
         vueDropzone: vue2Dropzone
     },
     props: [
+        'uploadUrl',
         'existingAssignmentId',
         'attachments',
-        'existingImageUploadToken',
         'language'
     ],
     data() {
         return {
             imageUploadToken: 0,
             dropzoneOptions: {
-                url: "/imageUpload",
+                url: this.uploadUrl,
                 paramName: "image",
                 headers: { "X-CSRF-TOKEN": token },
                 addRemoveLinks: true,
@@ -68,10 +76,6 @@ export default {
                 ...(this.language === 'pl' ? pl : en),
 
                 init: function() {
-                    if (this.attachments) {
-
-                    }
-
                     this.on("sending", function(file, xhr, formData) {
                         formData.append('token', document.getElementById('image-upload-token').value);
                     });
@@ -79,26 +83,45 @@ export default {
                         file.filename = response.filename;
                     });
                     this.on("removedfile", function(file) {
-                        axios.delete(this.url, {
-                            headers: { "X-CSRF-TOKEN": token },
-                            data: {
-                                token: document.getElementById('image-upload-token').value,
-                                filename: file.filename,
+                        axios.delete(document.getElementById('uploadUrl').value,
+                            {
+                                headers: { "X-CSRF-TOKEN": token },
+                                data: {
+                                    token: document.getElementById('image-upload-token').value,
+                                    filename: file.name,
+                                }
                             },
+                        )
+                        .then(response => {
+                            if (response.status == 200) {
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
                         });
                     });
                 },
+
+                error: function(file, response) {
+                    console.log(response);
+                }
             }
         };
     },
+    methods: {
+        emit: function (event, value) {
+            this.$root.$emit(event, value);
+        }
+    },
     mounted() {
-        if (this.existingImageUploadToken) {
-            this.imageUploadToken = this.existingImageUploadToken;
-            this.dropzoneOptions.url = `/assignments/${this.existingAssignmentId}/imageUpload`;
-            console.log(this.dropzoneOptions.url);
-            console.log(this.imageUploadToken);
-        } else {
-            this.imageUploadToken = uuid_v4();
+        this.imageUploadToken = uuid_v4();
+
+        if (this.attachments) {
+            let attachments = JSON.parse(this.attachments);
+
+            attachments.forEach(attachment => {
+                this.$refs.dropzone.manuallyAddFile({ "name": attachment.name, "size": attachment.size }, `${window.location.origin}/storage/app/${attachment.url}`);
+            });
         }
     }
 }

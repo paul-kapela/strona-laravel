@@ -6,7 +6,7 @@
         {{ __('content.date') }}: {{ $assignment->created_at }}
     </h6>
 
-    @if($multilang)
+    @if($multilang ?? '')
         <h6>{{ __('language.pl') }}</h6>
         {!! $assignment->content_pl !!}
 

@@ -6,6 +6,8 @@ use App\Assignment;
 use App\Grade;
 use App\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -92,12 +94,14 @@ class AssignmentsController extends Controller
             'grade' => 'required',
         ]);
 
-        $attachments = save_images($data['image-upload-token']);
+        $image_directory = Str::uuid();
+        $attachments = save_images($data['image-upload-token'], $image_directory);
+        Storage::deleteDirectory('public/cache/'.$data['image-upload-token']);
 
         $assignment = new Assignment();
         $assignment->content_pl = array_key_exists('content_pl', $data) ? $data['content_pl'] : '';
         $assignment->content_en = array_key_exists('content_en', $data) ? $data['content_en'] : '';
-        $assignment->image_upload_token = $data['image-upload-token'];
+        $assignment->image_directory = $image_directory;
         $assignment->attachments = serialize($attachments);
         $assignment->user()->associate($user);
         $assignment->subject()->associate(Subject::find($data['subject']));
@@ -107,26 +111,61 @@ class AssignmentsController extends Controller
         return redirect(route('assignments.show', $assignment));
     }
 
-    public function patch(\App\Assignment $assignment)
-    {
-
-    }
-
     public function update(\App\Assignment $assignment)
     {
+        $this->authorize('update', $assignment);
 
+        $user = auth()->user();
+
+        $data = request()->validate([
+            'content_pl' => 'required_without:content_en',
+            'content_en' => 'required_without:content_pl',
+            'subject' => 'required',
+            'grade' => 'required',
+        ]);
+
+        $updatedData = [
+            'content_pl' => array_key_exists('content_pl', $data) ? $data['content_pl'] : '',
+            'content_en' => array_key_exists('content_en', $data) ? $data['content_en'] : '',
+        ];
+
+        $assignment->update($updatedData);
+
+        if ($data['subject'] || $data['grade'])
+        {
+            if ($data['subject']) {
+                $assignment->subject()->dissociate();
+                $assignment->subject()->associate(Subject::find($data['subject']));
+            }
+
+            if ($data['grade']) {
+                // discard current
+                $assignment->grade()->dissociate();
+                $assignment->grade()->associate(Grade::find($data['grade']));
+            }
+
+            $assignment->save();
+        }
+
+        return redirect(route('assignments.show', $assignment));
     }
 
     public function delete(\App\Assignment $assignment)
     {
         $this->authorize('delete', $assignment);
 
-        return view('assignments.delete', compact($assignment));
+        return view('assignments.delete', compact('assignment'));
     }
 
     public function destroy(\App\Assignment $assignment)
     {
         $this->authorize('delete', $assignment);
+
+        Storage::deleteDirectory('public/uploads/'.$assignment->image_directory);
+
+        $assignment->delete();
+
+        return redirect(route('assignments.index'));
     }
 
     public function imageUploadStore(\App\Assignment $assignment)
@@ -140,13 +179,20 @@ class AssignmentsController extends Controller
             'image' => ['required', 'image']
         ]);
 
-        $token = request('token');
-
         $extension = $data['image']->getClientOriginalExtension();
 
         if (in_array(strtolower($extension), $validExtensions))
         {
-            $imagePath = $data['image']->store('uploads/'.$token, 'public');
+            $attachments = unserialize($assignment->attachments);
+
+            $imagePath = $data['image']->store('uploads/'.$assignment->image_directory, 'public');
+
+            Log::channel('stack')->info($imagePath);
+
+            $attachments[] = 'public/'.$imagePath;
+
+            $assignment->attachments = serialize($attachments);
+            $assignment->save();
         }
 
         return response()->json([
@@ -159,12 +205,20 @@ class AssignmentsController extends Controller
         $this->authorize('update', $assignment);
 
         $data = request()->validate([
-            'token' => 'required',
+            //'token' => 'required',
             'filename' => 'required'
         ]);
 
-        $path = 'public/uploads/'.$data['token'].'/'.$data['filename'];
+        $path = 'public/uploads/'.$assignment->image_directory.'/'.$data['filename'];
 
         Storage::delete($path);
+
+        $attachments = unserialize($assignment->attachments);
+        $assignment->attachments = serialize(array_diff($attachments, [$path]));
+        $assignment->save();
+
+        return response()->json([
+            'message' => 'success'
+        ]);
     }
 }

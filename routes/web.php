@@ -32,12 +32,11 @@ Route::get('assignments', 'AssignmentsController@index')->name('assignments.inde
 Route::post('assignments', 'AssignmentsController@store')->name('assignments.store'); // done
 Route::get('assignments/create', 'AssignmentsController@create')->name('assignments.create'); //done
 Route::get('assignments/{assignment}', 'AssignmentsController@show')->name('assignments.show'); //done
-Route::patch('assignments/{assignment}', 'AssignmentsController@patch')->name('assignments.patch');
+Route::patch('assignments/{assignment}', 'AssignmentsController@update')->name('assignments.update');
 Route::delete('assignments/{assignment}', 'AssignmentsController@destroy')->name('assignments.destroy');
-Route::get('assignments/{assignment}/update', 'AssignmentController@update')->name('assignments.update');
-Route::get('assignments/{assignment}/edit', 'AssignmentsController@edit')->name('assignments.edit');
+Route::get('assignments/{assignment}/edit', 'AssignmentsController@edit')->name('assignments.edit'); //done
 Route::get('assignments/{assignment}/delete', 'AssignmentsController@delete')->name('assignments.delete');
-Route::get('assignments/{assignment}/imageUpload', 'AssignmentsController@imageUploadStore')->name('assignments.imageUploadStore');
+Route::post('assignments/{assignment}/imageUpload', 'AssignmentsController@imageUploadStore')->name('assignments.imageUploadStore');
 Route::delete('assignments/{assignment}/imageUpload', 'AssignmentsController@imageUploadDestroy')->name('assignments.imageUploadDestroy');
 
 Route::get('assignments/{assignment}/answer', 'AnswersController@create')->name('answers.create'); // done

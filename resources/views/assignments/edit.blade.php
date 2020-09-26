@@ -12,8 +12,17 @@
                     <div class="card-header">{{ __('actions.edit').' '.__('create.assignment') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('assignments.store') }}" enctype="multipart/form-data" id="create-form">
+                        @component('components/assignment', [
+                            'assignment' => $assignment,
+                            'multilang' => policy(\App\Answer::class)->create(Auth::user())
+                        ])
+                        @endcomponent
+
+                        <hr>
+
+                        <form method="POST" action="{{ route('assignments.update', $assignment) }}" enctype="multipart/form-data" id="create-form">
                             @csrf
+                            @method('PATCH')
 
                             <div class="form-group">
                                 <label for="subject">{{ __('content.subject') }}</label>
@@ -48,13 +57,16 @@
                             </div>
 
                             @component('components/editor', [
-                                'assignment_id' => $assignment->id,
-                                'content' => $assignment->content,
-                                'attachments' => json_encode(unserialize($assignment->attachments)),
-                                'image_upload_token' => $assignment->image_upload_token,
+                                'assignment' => $assignment,
+                                'multilang' => policy(\App\Answer::class)->create(Auth::user()),
                             ])
                             @endcomponent
                         </form>
+
+{{--                        @component('components/images', [--}}
+{{--                            'images' => unserialize($assignment->attachments)--}}
+{{--                        ])--}}
+{{--                        @endcomponent--}}
 
                         @if ($errors->any())
                             <div class="alert alert-danger mt-3">

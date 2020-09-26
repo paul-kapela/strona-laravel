@@ -47,5 +47,9 @@ class ImageUploadController extends Controller
         $path = 'public/cache/'.$data['token'].'/'.$data['filename'];
 
         Storage::delete($path);
+
+        return response()->json([
+            'filename' => substr($path, strrpos($path   , '/' ) + 1)
+        ]);
     }
 }
