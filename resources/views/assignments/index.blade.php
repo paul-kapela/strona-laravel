@@ -34,6 +34,7 @@
                 <div class="mt-5 text-white text-center justify-content-center">
                     <h3>{{ __('search.empty_result') }}</h3>
                     <p>{{ __('search.try_again') }}</p>
+  					<a href="{{ route('assignments.create') }}">Prześlij zadanie</a>
                 </div>
             @endif
         </div>
