@@ -10940,13 +10940,6 @@ body {
   color: var(--color);
   background-color: var(--background-color);
   font-family: "Montserrat", sans-serif;
-  font-size: 24px;
-}
-
-@media (max-width: 767px) {
-  body {
-    font-size: 18px;
-  }
 }
 
 header,

@@ -7,7 +7,9 @@
         @endcomponent
 
         <div class="col-md-8">
-            @component('components.search-bar')
+            @component('components.search-bar', [
+                'route_name' => 'assignments.index'
+            ])
             @endcomponent
 
             <div class="card">
@@ -20,11 +22,11 @@
                         </div>
                     @endif
 
-                    {{ __('Jesteś zalogowany/a!') }}
+                    {{ __('auth.logged_in') }}
 
                     <br/>
 
-                    <a href="{{ route('assignments.create') }}">Prześlij zadanie</a>
+                    <a href="{{ route('assignments.create') }}">{{ __('create.send').' '.__('create.assignment')}}</a>
                 </div>
             </div>
         </div>

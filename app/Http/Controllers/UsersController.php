@@ -8,7 +8,12 @@ class UsersController extends Controller
 {
     public function index(\App\User $user)
     {
-        return view('users.index', compact('user'));
+        return 'asdf';
+    }
+
+    public function show(\App\User $user)
+    {
+        return view('users.show', compact('user'));
     }
 
     public function edit(\App\User $user)
@@ -19,5 +24,7 @@ class UsersController extends Controller
     public function update(\App\User $user)
     {
 
-    }
+    }   
+    
+    
 }

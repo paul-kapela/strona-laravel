@@ -13,8 +13,8 @@ class SubjectSeeder extends Seeder
     public function run()
     {
         DB::table('subjects')->insert([
-            ['name' => 'mathematics'],
-            ['name' => 'physics'],
+            [ 'name' => 'mathematics' ],
+            [ 'name' => 'physics' ],
         ]);
     }
 }

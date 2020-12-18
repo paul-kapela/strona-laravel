@@ -18,7 +18,13 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    @if(session()->get('theme') == 'dark')
+        <link rel="stylesheet" href="/css/bootstrap.dark.min.css"/> 
+    @else
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" crossorigin="anonymous">
+    @endif
+    
     <link rel="stylesheet" href="https:////netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
@@ -26,7 +32,7 @@
 
     <style>
         body {
-            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/img/background.jpg');
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/img/background.jpg');
             background-color: beige;
             background-attachment: fixed;
             background-repeat: no-repeat;
@@ -58,15 +64,15 @@
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
+                    <ul class="navbar-nav ml-auto text-">
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Zaloguj się') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('auth.login') }}</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Zarejestruj się') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('auth.signup') }}</a>
                                 </li>
                             @endif
                         @else
@@ -76,12 +82,22 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('users.index', Auth::user()->id) }}">Profil</a>
+                                    @if(policy(\App\Answer::class)->create(Auth::user()))
+                                        <a class="dropdown-item" href="{{ route('answers.index', [ 'user' => Auth::user()->id ]) }}">{{ __('profile.my').' '.__('profile.answers') }}</a>
+                                    @endif
+
+                                    <a class="dropdown-item" href="{{ route('assignments.index', [ 'user' => Auth::user()->id ]) }}">{{ __('profile.my').' '.__('profile.assignments') }}</a>
+
+                                    @if(Auth::user()->roles()->get()->first()->name == \App\Role::where('name', '=', 'user')->get()->first()->name)
+                                        <a class="dropdown-item" href="{{ route('plans.index')}}">{{ __('plan.my').' '.__('plan.plan') }}</a>
+                                    @endif
+
+                                    <a class="dropdown-item" href="{{ route('users.show', Auth::user()->id) }}">{{ __('profile.profile') }}</a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Wyloguj się') }}
+                                        {{ __('auth.logout') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -91,18 +107,11 @@
                             </li>
                         @endguest
 
-                        @if(count(config('app.languages')) > 1)
-                            <li class="nav-item dropdown d-md-down-none">
-                                <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                    {{ strtoupper(App::getLocale()) }}
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    @foreach(config('app.languages') as $langLocale => $langName)
-                                        <a class="dropdown-item" href="{{ url()->current() }}?change_language={{ $langLocale }}">{{ strtoupper($langLocale) }} ({{ $langName }})</a>
-                                    @endforeach
-                                </div>
-                            </li>
-                        @endif
+                        @component('components/language-dropdown')
+                        @endcomponent
+
+                        @component('components/theme-dropdown')
+                        @endcomponent
                     </ul>
                 </div>
             </div>

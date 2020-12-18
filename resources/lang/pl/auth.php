@@ -12,6 +12,25 @@ return [
     |
     */
 
+    'login' => 'Zaloguj się',
+    'username_or_email' => 'Nazwa użytkownika lub&nbsp;adres e-mail',
+    'password' => 'Hasło',
+    'remember_me' => 'Zapamiętaj mnie',
+    'reset_password' => 'Przywróć hasło',
+
+    'signup' => 'Zarejestruj się',
+    'username' => 'Nazwa użytkownika',
+    'email' => 'Adres e-mail',
+    'repeat_password' => 'Powtórz hasło',
+
+    'reset_password' => 'Zresetuj hasło',
+    'send_reset_link' => 'Wyślij link do zmiany hasła',
+    'confirm_password_change' => 'Potwierdź zmianę hasła',
+
+    'logged_in' => 'Jesteś zalogowany/a!',
+
+    'logout' => 'Wyloguj się',
+
     'failed'   => 'Błędny login lub hasło.',
     'throttle' => 'Za dużo nieudanych prób logowania. Proszę spróbować za :seconds sekund.',
 ];

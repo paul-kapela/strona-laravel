@@ -3,13 +3,13 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-
-
         @component('components.subject-select')
         @endcomponent
 
         <div class="col-md-8">
-            @component('components.search-bar')
+            @component('components.search-bar', [
+                'route_name' => 'assignments.index'
+            ])
             @endcomponent
 
             @component('components.grade-select')
@@ -17,24 +17,29 @@
 
             @if($assignments->first())
                 @foreach($assignments as $assignment)
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            @component('components/assignment', [
-                                'assignment' => $assignment
-                            ])
-                            @endcomponent
+                    @if($assignment->answers()->exists() || request('user') || policy(\App\Answer::class)->create(Auth::user()))
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                @component('components.assignment', [
+                                    'assignment' => $assignment,
+                                    'multilang' => policy(\App\Answer::class)->create(Auth::user())
+                                ])
+                                @endcomponent
 
-                            <div class="d-flex flex-column-reverse">
-                                <a href="{{ route('assignments.show', $assignment) }}" class="btn btn-primary align-self-end mt-3">{{ __('content.more') }}...</a>
+                                <div class="d-flex flex-column-reverse">
+                                    <a href="{{ route('assignments.show', $assignment) }}" class="btn btn-primary align-self-end mt-3">{{ __('content.more') }}...</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 @endforeach
             @else
                 <div class="mt-5 text-white text-center justify-content-center">
                     <h3>{{ __('search.empty_result') }}</h3>
                     <p>{{ __('search.try_again') }}</p>
-  					<a href="{{ route('assignments.create') }}">Prześlij zadanie</a>
+                    <a href="{{ route('assignments.create') }}">
+                        <u class="text-white font-weight-bold">{{ __('create.send').' '.__('create.assignment') }}</u>
+                    </a>
                 </div>
             @endif
         </div>

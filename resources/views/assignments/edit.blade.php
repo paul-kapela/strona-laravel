@@ -9,7 +9,14 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('actions.edit').' '.__('create.assignment') }}</div>
+                    <div class="card-header d-flex align-items-baseline">
+                        <span class="mr-auto">{{ __('actions.edit').' '.__('create.assignment') }}</span>
+
+                        @component('components/close-button', [
+                            'url' => route('assignments.show', $assignment)
+                        ])
+                        @endcomponent
+                    </div>
 
                     <div class="card-body">
                         @component('components/assignment', [
@@ -20,7 +27,7 @@
 
                         <hr>
 
-                        <form method="POST" action="{{ route('assignments.update', $assignment) }}" enctype="multipart/form-data" id="create-form">
+                        <form method="POST" action="{{ route('assignments.update', $assignment) }}" enctype="multipart/form-data" id="update-form">
                             @csrf
                             @method('PATCH')
 

@@ -6,6 +6,7 @@ use App\Assignment;
 use App\Grade;
 use App\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -21,9 +22,12 @@ class AssignmentsController extends Controller
 
     public function index()
     {
+        $this->authorize('viewAny', Assignment::class, auth()->user());
+
         $subject = request('subject');
         $grade = request('grade');
         $query = request('query');
+        $user = request('user');
 
         if ($subject && $grade)
         {
@@ -38,11 +42,23 @@ class AssignmentsController extends Controller
             $assignments = \App\Grade::where('name', '=', $grade)->get()->first()->assignments();
         }
 
+        if ($user)
+        {
+            if ($subject || $grade)
+            {
+                $assignments = $assignments->where('user_id', '=', $user);
+            }
+            else
+            {
+                $assignments = \App\Assignment::where('user_id', '=', $user);
+            }
+        }
+
         if ($query)
         {
             $column = App::getLocale() == 'pl' ? 'content_pl' : 'content_en';
 
-            if ($subject || $grade)
+            if ($subject || $grade || $user)
             {
                 $assignments = $assignments->where($column, 'LIKE', '%' . $query . '%');
             }
@@ -52,8 +68,8 @@ class AssignmentsController extends Controller
             }
         }
 
-        // TODO: Make number of assignments per page customizable
-        if ($subject || $grade || $query)
+        // TODO: Make number of assignments per page customizable?
+        if ($subject || $grade || $user || $query)
         {
             $assignments = $assignments->latest()->paginate(5);
         }
@@ -67,23 +83,29 @@ class AssignmentsController extends Controller
 
     public function show(\App\Assignment $assignment)
     {
+        $this->authorize('viewAny', Assignment::class, auth()->user());
+
         return view('assignments.show', compact('assignment'));
     }
 
     public function create()
     {
+        $this->authorize('create', Assignment::class, auth()->user());
+
         return view('assignments.create');
     }
 
     public function edit(\App\Assignment $assignment)
     {
-        $this->authorize('update', $assignment);
+        $this->authorize('update', auth()->user(), $assignment);
 
         return view('assignments.edit', compact('assignment'));
     }
 
     public function store()
     {
+        $this->authorize('create', Assignment::class, auth()->user());
+
         $user = auth()->user();
 
         $data = request()->validate([
@@ -99,13 +121,14 @@ class AssignmentsController extends Controller
         Storage::deleteDirectory('public/cache/'.$data['image-upload-token']);
 
         $assignment = new Assignment();
-        $assignment->content_pl = array_key_exists('content_pl', $data) ? $data['content_pl'] : '';
-        $assignment->content_en = array_key_exists('content_en', $data) ? $data['content_en'] : '';
+        $assignment->content_pl = (array_key_exists('content_pl', $data) && $data['content_pl'] != null) ? $data['content_pl'] : '';
+        $assignment->content_en = (array_key_exists('content_en', $data) && $data['content_en'] != null) ? $data['content_en'] : '';
         $assignment->image_directory = $image_directory;
         $assignment->attachments = serialize($attachments);
         $assignment->user()->associate($user);
         $assignment->subject()->associate(Subject::find($data['subject']));
         $assignment->grade()->associate(Grade::find($data['grade']));
+
         $assignment->save();
 
         return redirect(route('assignments.show', $assignment));
@@ -113,9 +136,11 @@ class AssignmentsController extends Controller
 
     public function update(\App\Assignment $assignment)
     {
-        $this->authorize('update', $assignment);
+        $this->authorize('update', auth()->user(), $assignment);
 
         $user = auth()->user();
+        
+        $this->authorize('update', $assignment);
 
         $data = request()->validate([
             'content_pl' => 'required_without:content_en',
@@ -125,8 +150,8 @@ class AssignmentsController extends Controller
         ]);
 
         $updatedData = [
-            'content_pl' => array_key_exists('content_pl', $data) ? $data['content_pl'] : '',
-            'content_en' => array_key_exists('content_en', $data) ? $data['content_en'] : '',
+            'content_pl' => (array_key_exists('content_pl', $data) && $data['content_pl'] != null) ? $data['content_pl'] : '',
+            'content_en' => (array_key_exists('content_en', $data) && $data['content_en'] != null) ? $data['content_en'] : '',
         ];
 
         $assignment->update($updatedData);
@@ -139,7 +164,6 @@ class AssignmentsController extends Controller
             }
 
             if ($data['grade']) {
-                // discard current
                 $assignment->grade()->dissociate();
                 $assignment->grade()->associate(Grade::find($data['grade']));
             }

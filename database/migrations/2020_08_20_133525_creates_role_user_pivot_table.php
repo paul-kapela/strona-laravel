@@ -15,8 +15,10 @@ class CreatesRoleUserPivotTable extends Migration
     {
         Schema::create('role_user', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('role_id');
             $table->foreignId('user_id');
+            
             $table->timestamps();
         });
     }

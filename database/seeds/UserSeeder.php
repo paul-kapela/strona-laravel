@@ -19,6 +19,6 @@ class UserSeeder extends Seeder
             'email_verified_at' => '2020-08-19 17:43:46',
         ]);
 
-        \App\User::find(1)->roles()->attach(\App\Role::where('name', '=', 'user')->get());
+        \App\User::find(1)->roles()->attach(\App\Role::where('name', '=', 'admin')->get());
     }
 }

@@ -24,6 +24,7 @@ class CreateAssignmentsTable extends Migration
             $table->text('content_en');
             $table->string('image_directory');
             $table->text('attachments');
+            
             $table->timestamps();
         });
     }

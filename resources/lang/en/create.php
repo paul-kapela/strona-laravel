@@ -2,7 +2,8 @@
 
 return [
     'send' => 'Send',
-    'assignment' => 'an assignment',
-    'answer' => 'an answer',
+    'an' => 'an ',
+    'assignment' => 'assignment',
+    'answer' => 'answer',
     'images' => 'Images',
 ];

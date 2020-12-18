@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Mail;
+use App\Notifications\ResetPassword;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -50,6 +51,11 @@ class User extends Authenticatable implements MustVerifyEmail
         });
     }
 
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPassword($token));
+    }
+
     public function assignments()
     {
         return $this->hasMany(Assignment::class);
@@ -78,5 +84,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function subjects()
     {
         return $this->belongsToMany(Subject::class);
+    }
+
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class);
     }
 }

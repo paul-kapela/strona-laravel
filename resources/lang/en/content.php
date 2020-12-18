@@ -15,6 +15,7 @@ return [
     'polish' => 'Polish',
     'english' => 'English',
     'no_images' => 'No images',
+    'answer' => 'Answer',
     'answers' => 'Answers',
     'no_answers' => 'No answers',
 ];

@@ -9,7 +9,14 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('create.send').' '.__('create.answer') }}</div>
+                <div class="card-header d-flex align-items-baseline">
+                    <span class="mr-auto">{{ __('create.send').' '.__('create.an').__('create.answer') }}</span>
+                
+                    @component('components.close-button', [
+                        'back' => true
+                    ])
+                    @endcomponent
+                </div>
 
                 <div class="card-body">
                     @component('components/assignment', [

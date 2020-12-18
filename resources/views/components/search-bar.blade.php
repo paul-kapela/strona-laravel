@@ -1,4 +1,4 @@
-<form action="{{ route('assignments.index', request()->all()) }}" method="GET" role="search">
+<form action="{{ route($route_name, request()->all()) }}" method="GET" role="search">
     <div class="input-group mb-3">
         <input type="text" class="form-control" name="query" placeholder="{{ __('search.search') }}" value="{{ request('query') }}">
 

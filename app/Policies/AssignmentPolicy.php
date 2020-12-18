@@ -18,7 +18,9 @@ class AssignmentPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        // todo: if is an admin, editor or just someone who bought the subscription
+
+        return true;
     }
 
     /**
@@ -41,7 +43,9 @@ class AssignmentPolicy
      */
     public function create(User $user)
     {
-        //
+        // todo: if is an admin, editor or just someone who bought the subscription
+
+        return true;
     }
 
     /**
@@ -57,6 +61,7 @@ class AssignmentPolicy
 
         $isAdmin = false;
         $owns = false;
+        $hasAnswer = $assignment->answers()->exists();
 
         foreach ($user->roles()->get() as $role)
         {
@@ -70,7 +75,7 @@ class AssignmentPolicy
             }
         }
 
-        return $isAdmin || $owns;
+        return $isAdmin || ($owns && !$hasAnswer);
     }
 
     /**
@@ -86,6 +91,7 @@ class AssignmentPolicy
 
         $isAdmin = false;
         $owns = false;
+        $hasAnswer = $assignment->answers()->exists();
 
         foreach ($user->roles()->get() as $role)
         {
@@ -99,7 +105,7 @@ class AssignmentPolicy
             }
         }
 
-        return $isAdmin || $owns;
+        return $isAdmin || ($owns && !$hasAnswer);
     }
 
     /**

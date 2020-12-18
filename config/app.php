@@ -229,9 +229,14 @@ return [
 
     ],
 
-    'languages' =>[
-        'pl' => 'Polish',
+    'languages' => [
+        'pl' => 'Polski',
         'en' => 'English',
+    ],
+
+    'themes' => [
+        'light' => 'light',
+        'dark' => 'dark',
     ],
 
 ];

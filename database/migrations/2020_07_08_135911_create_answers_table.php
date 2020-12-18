@@ -21,6 +21,7 @@ class CreateAnswersTable extends Migration
 
             $table->text('content_pl');
             $table->text('content_en');
+            $table->string('image_directory');
             $table->text('attachments');
 
             $table->timestamps();

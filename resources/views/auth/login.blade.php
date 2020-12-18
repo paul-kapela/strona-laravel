@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Zaloguj się') }}</div>
+                <div class="card-header">{{ __('auth.login') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
@@ -14,7 +14,7 @@
                         <!-- Username or e-mail -->
                         <div class="form-group row">
                             <label for="login" class="col-sm-4 col-form-label text-md-right">
-                                Nazwa użytkownika lub&nbsp;adres e-mail
+                                {!! __('auth.username_or_email') !!}
                             </label>
                         
                             <div class="col-md-6">
@@ -47,7 +47,7 @@
 
                         <!-- Password -->
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Hasło') }}</label>
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('auth.password') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
@@ -67,7 +67,7 @@
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
                                     <label class="form-check-label" for="remember">
-                                        {{ __('Nie wylogowuj') }}
+                                        {{ __('auth.remember_me') }}
                                     </label>
                                 </div>
                             </div>
@@ -77,12 +77,12 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Zaloguj') }}
+                                    {{ __('auth.login') }}
                                 </button>
 
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Przywróć hasło') }}
+                                        {{ __('auth.reset_password') }}
                                     </a>
                                 @endif
                             </div>

@@ -13,8 +13,8 @@ class GradeSeeder extends Seeder
     public function run()
     {
         DB::table('grades')->insert([
-            ['name' => 'highschool'],
-            ['name' => 'college']
+            [ 'name' => 'highschool' ],
+            [ 'name' => 'college' ]
         ]);
     }
 }

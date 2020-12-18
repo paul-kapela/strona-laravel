@@ -1,15 +1,18 @@
 @extends('layouts.app')
 
-@section('styles')
-	<link href="{{ asset('css/mathquill4quill.min.css') }}" rel="stylesheet">
-@endsection
-
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('actions.delete').' '.__('create.assignment') }}</div>
+                <div class="card-header d-flex align-items-baseline">
+                    <span class="mr-auto">{{ __('actions.delete').' '.__('create.assignment') }}</span>
+
+                    @component('components/close-button', [
+                        'url' => route('assignments.show', $assignment)
+                    ])
+                    @endcomponent
+                </div>
 
                 <div class="card-body">
                     @component('components/assignment', [
@@ -20,11 +23,11 @@
 
                     <hr>
 
-                    <form method="POST" action="{{ route('assignments.destroy', $assignment->id) }}">
+                    <form method="POST" action="{{ route('assignments.destroy', $assignment) }}">
                         @csrf
                         @method('DELETE')
 
-                        <label for="delete-confirm">Czy na pewno chcesz usunąć to zadanie?</label>
+                        <label for="delete-confirm">{{ __('actions.delete_confirmation').__('create.assignment').'?' }}</label>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6">

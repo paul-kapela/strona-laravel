@@ -22,8 +22,13 @@ if (!function_exists('save_images')) {
 }
 
 if (!function_exists('attachments_to_json')) {
-    function attachments_to_json($assignment_id) {
-        $attachments = unserialize(\App\Assignment::find($assignment_id)->attachments);
+    function attachments_to_json($id, $model) {
+        $attachments = [];
+        
+        if ($model == 'assignment')
+            $attachments = unserialize(\App\Assignment::find($id)->attachments);
+        elseif ($model == 'answer')
+            $attachments = unserialize(\App\Answer::find($id)->attachments);
 
         $object = [];
 
