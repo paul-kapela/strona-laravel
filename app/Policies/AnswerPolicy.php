@@ -41,18 +41,10 @@ class AnswerPolicy
      */
     public function create(User $user)
     {
-        $admin_role_name = \App\Role::where('name', '=', 'admin')->get()->first()->name;
-        $editor_role_name = \App\Role::where('name', '=', 'editor')->get()->first()->name;
-
-        foreach ($user->roles()->get() as $role)
-        {
-            if ($role->name == $admin_role_name || $role->name == $editor_role_name)
-            {
-                return true;
-            }
-        }
-
-        return false;
+        $isAdmin = $user->belongsToRoles('admin');
+        $isEditor = $user->belongsToRoles('editor');
+        
+        return $isAdmin || $isEditor;
     }
 
     /**
@@ -64,25 +56,12 @@ class AnswerPolicy
      */
     public function update(User $user, Answer $answer)
     {
-        $admin_role_name = \App\Role::where('name', '=', 'admin')->get()->first()->name;
-        $editor_role_name = \App\Role::where('name', '=', 'editor')->get()->first()->name;
+        $isAdmin = $user->belongsToRoles('admin');
+        $isEditor = $user->belongsToRoles('editor');
+        
+        $owns = $user->id == $answer->user_id;
 
-        $isAdmin = false;
-        $owns = false;
-
-        foreach ($user->roles()->get() as $role)
-        {
-            if ($role->name == $admin_role_name)
-            {
-                $isAdmin = true;
-            }
-            else if ($role->name == $editor_role_name)
-            {
-                $owns = $user->id == $answer->user_id;
-            }
-        }
-
-        return $isAdmin || $owns;
+        return $isAdmin || ($isEditor && $owns);
     }
 
     /**
@@ -94,25 +73,12 @@ class AnswerPolicy
      */
     public function delete(User $user, Answer $answer)
     {
-        $admin_role_name = \App\Role::where('name', '=', 'admin')->get()->first()->name;
-        $editor_role_name = \App\Role::where('name', '=', 'editor')->get()->first()->name;
+        $isAdmin = $user->belongsToRoles('admin');
+        $isEditor = $user->belongsToRoles('editor');
 
-        $isAdmin = false;
-        $owns = false;
+        $owns = $user->id == $answer->user_id;
 
-        foreach ($user->roles()->get() as $role)
-        {
-            if ($role->name == $admin_role_name)
-            {
-                $isAdmin = true;
-            }
-            else if ($role->name == $editor_role_name)
-            {
-                $owns = $user->id == $answer->user_id;
-            }
-        }
-
-        return $isAdmin || $owns;
+        return $isAdmin || ($isEditor && $owns);
     }
 
     /**

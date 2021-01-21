@@ -16,9 +16,9 @@ class CreatePlansTable extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedSmallInteger('price');
+            $table->unsignedFloat('price');
             $table->unsignedSmallInteger('number_of_days');
-            $table->unsignedSmallInteger('promotional_price')->nullable();
+            $table->unsignedFloat('promotional_price')->nullable();
             $table->unsignedSmallInteger('additional_days')->nullable();
 
             $table->timestamps();

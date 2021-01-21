@@ -150,8 +150,8 @@ class AnswersController extends Controller
         ]);
 
         $updatedData = [
-            'content_pl' => (array_key_exists('content_pl', $data) && $data['content_pl'] != null) ? $data['content_pl'] : '',
-            'content_en' => (array_key_exists('content_en', $data) && $data['content_en'] != null) ? $data['content_en'] : '',
+            'content_pl' => $data['content_pl'] ?? '',
+            'content_en' => $data['content_en'] ?? '',
         ];
 
         $answer->update($updatedData);

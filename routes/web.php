@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,17 +14,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes(['verify' => true]);
 
-Route::get('home', 'HomeController@index')->name('home');
+Route::get('home', 'HomeController@index')->name('home'); // done
+Route::get('/', 'HomeController@welcome')->name('welcome');
+Route::get('terms', 'HomeController@tos')->name('terms');
+
+Route::get('notifications', 'NotificationsController@index')->name('notifications');
 
 Route::get('users', 'UsersController@index')->name('users.index');
-Route::get('users/{user}', 'UsersController@show')->name('users.show');
-Route::get('users/{user}/edit', 'UsersController@edit')->name('users.edit');
+Route::get('users/{user}', 'UsersController@show')->name('users.show'); // done
+Route::patch('users/{user}', 'UsersController@update')->name('users.update'); // done
+Route::get('users/{user}/edit', 'UsersController@edit')->name('users.edit'); // done
+
+Route::get('email/change', 'EmailChangeController@verify')->name('email.change'); // done
 
 Route::get('plans', 'PlanController@index')->name('plans.index');
 
@@ -37,6 +41,10 @@ Route::get('assignments/{assignment}/edit', 'AssignmentsController@edit')->name(
 Route::get('assignments/{assignment}/delete', 'AssignmentsController@delete')->name('assignments.delete'); // done
 Route::post('assignments/{assignment}/imageUpload', 'AssignmentsController@imageUploadStore')->name('assignments.imageUploadStore'); // done
 Route::delete('assignments/{assignment}/imageUpload', 'AssignmentsController@imageUploadDestroy')->name('assignments.imageUploadDestroy'); // done
+
+Route::get('requests', 'RequestController@index')->name('requests.index');
+Route::get('assignments/{assignment}/request/create', 'RequestController@create')->name('requests.create');
+Route::post('assignments/{assignment}/request', 'RequestController@store')->name('requests.store');
 
 Route::get('answers', 'AnswersController@index')->name('answers.index'); // done
 Route::get('assignments/{assignment}/answer', 'AnswersController@create')->name('answers.create'); // done

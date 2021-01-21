@@ -8,4 +8,11 @@ return [
     'my' => 'Moje',
     'assignments' => 'zadania',
     'answers' => 'odpowiedzi',
+
+    'email' => 'Adres e-mail',
+    'phone' => 'Numer telefonu',
+    'skype' => 'Skype',
+    'hidden' => 'Ukryte',
+    'view' => 'Pokaż',
+    'save' => 'Zapisz',
 ];

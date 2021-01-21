@@ -33,7 +33,7 @@ class ResetPassword extends ResetPasswordNotification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**

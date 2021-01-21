@@ -57,23 +57,10 @@ class AssignmentPolicy
      */
     public function update(User $user, Assignment $assignment)
     {
-        $admin_role_name = \App\Role::where('name', '=', 'admin')->get()->first()->name;
+        $isAdmin = $user->belongsToRoles('admin');
 
-        $isAdmin = false;
-        $owns = false;
+        $owns = $user->id == $assignment->user_id;
         $hasAnswer = $assignment->answers()->exists();
-
-        foreach ($user->roles()->get() as $role)
-        {
-            if ($role->name == $admin_role_name)
-            {
-                $isAdmin = true;
-            }
-            else
-            {
-                $owns = $user->id == $assignment->user_id;
-            }
-        }
 
         return $isAdmin || ($owns && !$hasAnswer);
     }
@@ -87,23 +74,10 @@ class AssignmentPolicy
      */
     public function delete(User $user, Assignment $assignment)
     {
-        $admin_role_name = \App\Role::where('name', '=', 'admin')->get()->first()->name;
+        $isAdmin = $user->belongsToRoles('admin');
 
-        $isAdmin = false;
-        $owns = false;
+        $owns = $owns = $user->id == $assignment->user_id;
         $hasAnswer = $assignment->answers()->exists();
-
-        foreach ($user->roles()->get() as $role)
-        {
-            if ($role->name == $admin_role_name)
-            {
-                $isAdmin = true;
-            }
-            else
-            {
-                $owns = $user->id == $assignment->user_id;
-            }
-        }
 
         return $isAdmin || ($owns && !$hasAnswer);
     }

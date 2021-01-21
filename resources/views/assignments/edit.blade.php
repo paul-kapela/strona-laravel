@@ -64,7 +64,8 @@
                             </div>
 
                             @component('components/editor', [
-                                'assignment' => $assignment,
+                                'model' => 'assignment',
+                                'entry' => $assignment,
                                 'multilang' => policy(\App\Answer::class)->create(Auth::user()),
                             ])
                             @endcomponent

@@ -18,7 +18,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'username', 'email', 'password',
+        'username', 'email', 'phone', 'skype', 'email_show', 'phone_show', 'skype_show', 'password',
     ];
 
     // 'name', 'surname',
@@ -61,6 +61,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Assignment::class);
     }
 
+    public function requests()
+    {
+        return $this->hasMany(Request::class);
+    }
+
+    public function request_resonses()
+    {
+        return $this->hasMany(RequestResponse::class);
+    }
+
     public function answers()
     {
         return $this->hasMany(Answer::class);
@@ -89,5 +99,44 @@ class User extends Authenticatable implements MustVerifyEmail
     public function plan()
     {
         return $this->belongsTo(Plan::class);
+    }
+
+    public function rolesToString()
+    {
+        $roles = '';
+        $rawRoles = $this->roles()->get();
+        $lastIndex = $this->roles()->get()->count() - 1;
+
+        for ($i = 0; $i < $lastIndex; $i++)
+        {
+            $roles .= $rawRoles[$i]->name.', ';
+        }
+
+        $roles .= $rawRoles[$lastIndex]->name;
+
+        return $roles;
+    }
+
+    public function belongsToRoles(...$roleNames)
+    {
+        $role_names = array();
+
+        foreach ($roleNames as $roleName)
+        {
+            $role_names[] = \App\Role::where('name', '=', $roleName)->get()->first()->name;
+        }
+        
+        foreach ($this->roles()->get() as $role)
+        {
+            foreach ($role_names as $role_name)
+            {
+                if ($role->name == $role_name)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

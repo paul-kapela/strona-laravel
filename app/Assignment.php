@@ -4,14 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Str;
 
 class Assignment extends Model
 {
     protected $guarded = [];
 
-    public function content()
+    public function content($language = NULL)
     {
-        $locale = App::getLocale();
+        $locale = $language ?? App::getLocale();
 
         switch ($locale)
         {
@@ -27,9 +28,19 @@ class Assignment extends Model
         }
     }
 
+    public function shortContent($language = NULL)
+    {
+        return Str::words(strip_tags($this->content($language)), 50, '...');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function requests()
+    {
+        return $this->hasMany(Request::class);
     }
 
     public function answers()

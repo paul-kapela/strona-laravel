@@ -10940,6 +10940,15 @@ body {
   color: var(--color);
   background-color: var(--background-color);
   font-family: "Montserrat", sans-serif;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/img/background.jpg");
+  background-color: beige;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#app {
+  min-height: 100vh;
 }
 
 header,
@@ -10961,5 +10970,10 @@ footer {
   user-select: none;
   /* Non-prefixed version, currently
    supported by Chrome and Opera */
+}
+
+.chalk {
+  font-family: "Walter Turncoat", cursive;
+  font-weight: bold;
 }
 

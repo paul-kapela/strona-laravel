@@ -98,6 +98,13 @@
                         <!-- Register - submit button -->
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
+                                <!-- Accept terms and conditions -->
+
+                                <div class="form-check mb-3">
+                                    <input type="checkbox" class="form-check-input" id="tos-check" name="tos-check" required>
+                                    <label for="tos-check" class="form-check-label">{{ __('tos.know_and_accept').lcfirst(__('tos.tos')).'.' }}</label>
+                                </div>
+
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('auth.signup') }}
                                 </button>

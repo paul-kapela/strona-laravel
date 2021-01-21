@@ -36,4 +36,9 @@ class Answer extends Model
     {
         return $this->belongsTo(Assignment::class);
     }
+
+    public function request()
+    {
+        return $this->belongsTo(RequestResponse::class);
+    }
 }

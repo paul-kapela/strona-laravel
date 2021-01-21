@@ -104,9 +104,9 @@ class AssignmentsController extends Controller
 
     public function store()
     {
-        $this->authorize('create', Assignment::class, auth()->user());
-
         $user = auth()->user();
+
+        $this->authorize('create', Assignment::class, $user);
 
         $data = request()->validate([
             'content_pl' => 'required_without:content_en',
@@ -150,8 +150,8 @@ class AssignmentsController extends Controller
         ]);
 
         $updatedData = [
-            'content_pl' => (array_key_exists('content_pl', $data) && $data['content_pl'] != null) ? $data['content_pl'] : '',
-            'content_en' => (array_key_exists('content_en', $data) && $data['content_en'] != null) ? $data['content_en'] : '',
+            'content_pl' => $data['content_pl'] ?? '',
+            'content_en' => $data['content_en'] ?? '',
         ];
 
         $assignment->update($updatedData);

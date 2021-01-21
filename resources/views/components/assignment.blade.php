@@ -8,14 +8,28 @@
 
     @if($multilang ?? '')
         <h6>{{ __('language.pl') }}</h6>
-        {!! $assignment->content_pl !!}
+
+        @if($thumb ?? '')
+            {!! $assignment->shortContent('pl') !!}
+        @else
+            {!! $assignment->content('pl') !!}
+        @endif
 
         <hr>
 
         <h6>{{ __('language.en') }}</h6>
-        {!! $assignment->content_en !!}
+        
+        @if($thumb ?? '')
+            {!! $assignment->shortContent('en') !!}
+        @else
+            {!! $assignment->content('en') !!}
+        @endif
     @else
-        {!! $assignment->content() !!}
+        @if($thumb ?? '')
+            {!! $assignment->shortContent() !!}
+        @else
+            {!! $assignment->content() !!}
+        @endif
     @endif
 
     @component('components/images', [

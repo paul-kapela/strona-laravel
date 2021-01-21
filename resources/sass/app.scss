@@ -24,6 +24,16 @@ body {
 
     font-family: 'Montserrat', sans-serif;
     // font-size: 24px;
+
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/img/background.jpg');
+    background-color: beige;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#app {
+    min-height: 100vh;
 }
 
 // @media (max-width: 767px) {
@@ -44,4 +54,9 @@ header, section, footer {
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none; /* Non-prefixed version, currently
                         supported by Chrome and Opera */
+}
+
+.chalk {
+    font-family: "Walter Turncoat", cursive;
+    font-weight: bold;
 }

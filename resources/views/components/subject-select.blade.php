@@ -1,6 +1,6 @@
 <div class="col-md-2 text-white">
     @if(Request::url() == route('assignments.index'))
-        @component('components.clear-criteria-button')
+        @component('components/clear-criteria-button')
         @endcomponent
     @endif
 

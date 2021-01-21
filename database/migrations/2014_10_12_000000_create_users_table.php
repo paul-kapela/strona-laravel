@@ -17,9 +17,18 @@ class CreateUsersTable extends Migration
             $table->id();
 
             $table->string('username')->unique();
+
             $table->string('email')->unique();
+            $table->string('phone')->nullable();
+            $table->string('skype')->nullable();
+
+            $table->boolean('email_show')->default(false);
+            $table->boolean('phone_show')->default(false);
+            $table->boolean('skype_show')->default(false);
+
             $table->timestamp('email_verified_at')->nullable();
 
+            $table->unsignedInteger('bonus_points')->default(0);
             $table->timestamp('has_access_to_date')->nullable();
             
             $table->string('password');
