@@ -45,7 +45,9 @@
   
           @if(policy(\App\Request::class)->create(Auth::user()))
             <a href="{{ route('requests.create', ['assignment' => $assignment->id]) }}" class="mr-2 text-white">{{ __('request.add').' '.__('request.request') }}</a>
+          @endif
 
+          @if(policy(\App\Request::class)->viewAny(Auth::user()))
             <a href="{{ route('requests.index', ['assignment' => $assignment->id]) }}" class="text-white">{{ __('request.show_all').' '.lcfirst(__('request.title')) }}</a>
           @endif
         </div>

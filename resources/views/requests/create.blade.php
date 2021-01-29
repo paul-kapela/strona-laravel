@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('styles')
-<link href="{{ asset('css/mathquill4quill.min.css') }}" rel="stylesheet">    
+<link href="{{ asset('css/mathquill4quill.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -20,7 +20,7 @@
 
         <div class="card-body">
           @component('components.assignment', [
-            'assignment' => $assignment,
+            'assignment' => $assignment
           ])  
           @endcomponent
 
@@ -47,7 +47,7 @@
             <div class="form-group row mb-0">
               <div class="col-md-6">
                 <button class="btn btn-primary" type="submit">
-                  {{ __('create.send')}}
+                  {{ __('create.send') }}
                 </button>
               </div>
             </div>

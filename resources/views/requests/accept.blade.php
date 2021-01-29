@@ -1,54 +1,50 @@
 @extends('layouts.app')
 
-@section('styles')
-<link href="{{ asset('css/mathquill4quill.min.css') }}" rel="stylesheet">
-@endsection
-
 @section('content')
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">
         <div class="card-header d-flex align-items-baseline">
-          <span class="mr-auto">{{ __('create.edit').' '.__('request.request') }}</span>
-
-          @component('components.close-button', [
+          <span class="mr-auto">{{ __('request.answer').' '.__('request.request') }}</span>
+          
+          @component('components/close-button', [
             'back' => true
           ])
           @endcomponent
         </div>
 
         <div class="card-body">
-          @component('components.assignment', [
-            'assignment' => $request->assignment
+          @component('components.request', [
+            'request' => $request
           ])
           @endcomponent
 
           <hr>
 
-          <form method="POST" action="{{ route('requests.update', $request) }}" enctype="multipart/form-data">
+          <form method="POST" action="{{ route('requests.answer', $request) }}" enctype="multipart/form-data" id="accept-form">
             @csrf
-            @method('PATCH')
 
             <div class="form-group row">
-              <label for="dueDate" class="col-md-4 col-form-label">{{ __('request.due_date') }}: </label>
+              <label for="price" class="col-md-4 col-form-label">{{ __('content.price') }}: </label>
 
               <div class="col-md-6">
                 <input
-                  id="dueDate"
-                  type="date"
-                  min="{{ (new DateTime('tomorrow'))->format('Y-m-d') }}"
-                  class="form-control{{ $errors->has('due_date') ? ' is-invalid' : '' }}"
-                  name="due_date"
-                  value="{{ old('due_date') ?? $request->due_date }}"
-                >  
+                  id="price"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  class="form-control{{ $errors->has('price') ? ' is-invalid' : '' }}"
+                  name="price"
+                  value="{{ old('price') }}"
+                >
               </div>
             </div>
 
             <div class="form-group row mb-0">
               <div class="col-md-6">
                 <button class="btn btn-primary" type="submit">
-                  {{ __('create.save')}}
+                  {{ __('create.send') }}
                 </button>
               </div>
             </div>

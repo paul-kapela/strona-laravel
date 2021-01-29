@@ -4,6 +4,9 @@ return [
   'title' => 'Zapytania',
 
   'add' => 'Dodaj',
+  'accept' => 'Zaakceptuj',
+  'answer' => 'Odpowiedz na',
+  'reject' => 'Odrzuć',
   'request' => 'zapytanie',
 
   'no' => 'Brak',

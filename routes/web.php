@@ -43,8 +43,15 @@ Route::post('assignments/{assignment}/imageUpload', 'AssignmentsController@image
 Route::delete('assignments/{assignment}/imageUpload', 'AssignmentsController@imageUploadDestroy')->name('assignments.imageUploadDestroy'); // done
 
 Route::get('requests', 'RequestController@index')->name('requests.index');
-Route::get('assignments/{assignment}/request/create', 'RequestController@create')->name('requests.create');
-Route::post('assignments/{assignment}/request', 'RequestController@store')->name('requests.store');
+Route::get('assignments/{assignment}/request/create', 'RequestController@create')->name('requests.create'); // done
+Route::post('assignments/{assignment}/request', 'RequestController@store')->name('requests.store'); // done
+Route::get('requests/{request}/edit', 'RequestController@edit')->name('requests.edit');
+Route::patch('requests/{request}', 'RequestController@update')->name('requests.update');
+Route::get('requests/{request}/accept', 'RequestController@accept')->name('requests.accept');
+Route::post('requests/{request}/accept', 'RequestController@answer')->name('requests.answer');
+Route::post('requests/{request}', 'RequestController@reject')->name('requests.reject');
+Route::get('requests/{request}/delete', 'RequestController@delete')->name('requests.delete');
+Route::delete('requests/{request}', 'RequestController@destroy')->name('requests.destroy');
 
 Route::get('answers', 'AnswersController@index')->name('answers.index'); // done
 Route::get('assignments/{assignment}/answer', 'AnswersController@create')->name('answers.create'); // done

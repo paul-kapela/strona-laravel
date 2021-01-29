@@ -2,6 +2,7 @@
 
 return [
     'more' => 'Więcej',
+    'all' => 'Wszystkie',
     'assignment' => 'Zadanie',
     'user' => 'Użytkownik',
     'editor' => 'Edytor',
@@ -18,4 +19,5 @@ return [
     'answer' => 'Odpowiedź',
     'answers' => 'Odpowiedzi',
     'no_answers' => 'Brak odpowiedzi',
+    'price' => 'Cena',
 ];

@@ -23,4 +23,7 @@ return [
   // verify_email
   'verify' => 'Aby dalej korzystać z serwisu, należy zwerifykować adres e-mail.',
   'resend_verify_link' => 'Jeżeli e-mail weryfikacyjny nie dotarł, kliknij tutaj, aby wysłać go ponownie.',
+
+  // request_rejected
+  'request_rejected' => 'Twoje zapytanie o rozwiązanie zadania do dnia :date zostało odrzucone. Spróbuj jeszcze raz z późniejszą datą.',
 ];

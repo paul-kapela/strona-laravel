@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Assignment;
+use App\Notifications\RequestRejected;
+use App\Notifications\RequestResponded;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class RequestController extends Controller
 {
@@ -24,7 +27,7 @@ class RequestController extends Controller
 
         if ($currentUser->belongsToRoles('user'))
         {
-            $requests = \App\Request::where('user_id', '=', $user);
+            $requests = \App\Request::where('user_id', '=', $currentUser->getKey());
 
             if ($assignment)
             {
@@ -37,28 +40,25 @@ class RequestController extends Controller
             {
                 $requests = \App\Request::where('user_id', '=', $user);
             }
-
-            if ($assignment)
+            else if ($assignment)
             {
-                $requests = $requests->where('assignment_id', '=', $assignment);
+                $requests = \App\Request::where('assignment_id', '=', $assignment);
             }
-            else if ($subject || $grade)
-            {
-                if ($subject)
-                {
-                    $requests = \App\Request::whereHas('assignment', function ($query) {
-                        $query->whereHas('subject', function ($query) {
-                            $query->where('name', '=', request('subject'));
-                        });
-                    });
-                }
 
-                if ($grade)
-                {
-                    $requests = \App\Request::whereHas('assignment', function ($query) {
-                        $query->whereHas('grade', '=', request('grade'));
+            if ($subject)
+            {
+                $requests = $requests->whereHas('assignment', function ($query) {
+                    $query->whereHas('subject', function ($query) {
+                        $query->where('name', '=', request('subject'));
                     });
-                }
+                });
+            }
+
+            if ($grade)
+            {
+                $requests = $requests->whereHas('assignment', function ($query) {
+                    $query->whereHas('grade', '=', request('grade'));
+                });
             }
         }
 
@@ -95,7 +95,7 @@ class RequestController extends Controller
         $this->authorize('create', \App\Request::class, $user);
 
         $data = request()->validate([
-            'due_date' => ['required', 'date', 'date_format:Y-m-d', 'after:tomorrow']
+            'due_date' => ['required', 'date', 'date_format:Y-m-d', 'after:today']
         ]);
 
         $request = new \App\Request();
@@ -108,9 +108,19 @@ class RequestController extends Controller
         return redirect(route('assignments.show', $assignment));
     }
 
-    public function update()
+    public function update(\App\Request $request)
     {
+        $user = auth()->user();
 
+        $this->authorize('update', $user, $request);
+
+        $data = request()->validate([
+            'due_date' => ['required', 'date', 'date_format:Y-m-d', 'after:today']
+        ]);
+
+        $request->update($data);
+
+        return redirect(route('requests.index'));
     }
 
     public function delete(\App\Request $request)
@@ -122,6 +132,53 @@ class RequestController extends Controller
 
     public function destroy()
     {
+        
+    }
 
+    public function accept(\App\Request $request)
+    {
+        if (!auth()->user()->belongsToRoles('editor', 'admin'))
+            abort(401);
+
+        return view('requests.accept', compact('request'));
+    }
+
+    public function answer(\App\Request $request)
+    {
+        $user = auth()->user();
+
+        if (!$user->belongsToRoles('editor', 'admin'))
+            abort(401);
+
+        $data = request()->validate([
+            'price' => ['required', 'integer', 'gt:0']
+        ]);
+
+        $requestResponse = new \App\RequestResponse();
+        $requestResponse->price = $data['price'];
+        $requestResponse->accepted = false;
+        $requestResponse->paid = false;
+        $requestResponse->user()->associate($user);
+        $requestResponse->request()->associate($request);
+
+        $requestResponse->save();
+
+        Notification::send($request->user, new RequestResponded());
+
+        return redirect(route('requests.index'));
+    }
+
+    public function reject(\App\Request $request)
+    {
+        $user = auth()->user();
+
+        if(!$user->belongsToRoles('editor', 'admin'))
+            abort(401);
+
+        Notification::send($request->user, new RequestRejected($request));
+
+        $request->delete();
+
+        return redirect(route('requests.index'));
     }
 }

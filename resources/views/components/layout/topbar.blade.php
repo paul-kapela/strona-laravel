@@ -40,7 +40,11 @@
                 <a class="dropdown-item" href="{{ route('assignments.index', [ 'user' => Auth::user()->id ]) }}">{{ __('profile.my').' '.__('profile.assignments') }}</a>
 
                 @if(Auth::user()->roles()->get()->first()->name == \App\Role::where('name', '=', 'user')->get()->first()->name)
-                  <a class="dropdown-item" href="{{ route('plans.index')}}">{{ __('plan.my').' '.__('plan.plan') }}</a>
+                  <a class="dropdown-item" href="{{ route('requests.index') }}">{{ __('profile.my').' '.lcfirst(__('request.title')) }}</a>
+
+                  <a class="dropdown-item" href="{{ route('plans.index') }}">{{ __('plan.my').' '.__('plan.plan') }}</a>
+                @else
+                  <a class="dropdown-item" href="{{ route('requests.index') }}">{{ __('content.all').' '.lcfirst(__('request.title')) }}</a>
                 @endif
 
                 <a class="dropdown-item" href="{{ route('users.show', Auth::user()->id) }}">{{ __('profile.profile') }}</a>                          

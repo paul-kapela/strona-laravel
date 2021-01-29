@@ -20,7 +20,8 @@ class CreateRequestResponsesTable extends Migration
             $table->foreignId('request_id');
             $table->foreignId('answer_id')->nullable();
 
-            $table->unsignedFloat('price');
+            $table->unsignedInteger('price');
+            $table->boolean('accepted');
             $table->boolean('paid');
 
             $table->timestamps();

@@ -4,6 +4,9 @@ return [
   'title' => 'Requests',
 
   'add' => 'Add',
+  'accept' => 'Accept',
+  'answer' => 'Answer to',
+  'reject' => 'Reject',
   'request' => 'a request',
 
   'no' => 'No',

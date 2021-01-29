@@ -31,12 +31,13 @@ class UsersController extends Controller
 
     public function edit(\App\User $user)
     {
+        $this->authorize('update', $user);
+
         return view('users.edit', compact('user'));
     }
 
-    public function update(\App\User $updatedUser)
+    public function update(\App\User $user)
     {
-        $user = auth()->user();
         $userModel = User::findOrFail($user->id);
 
         $this->authorize('update', $user);

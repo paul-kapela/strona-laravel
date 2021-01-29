@@ -136,11 +136,9 @@ class AssignmentsController extends Controller
 
     public function update(\App\Assignment $assignment)
     {
-        $this->authorize('update', auth()->user(), $assignment);
-
         $user = auth()->user();
         
-        $this->authorize('update', $assignment);
+        $this->authorize('update', $user, $assignment);
 
         $data = request()->validate([
             'content_pl' => 'required_without:content_en',

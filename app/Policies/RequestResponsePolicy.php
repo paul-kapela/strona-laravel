@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Request;
+use App\RequestResponse;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class RequestPolicy
+class RequestResponsePolicy
 {
     use HandlesAuthorization;
 
@@ -18,17 +18,17 @@ class RequestPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+        //
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Request  $request
+     * @param  \App\RequestResponse  $requestResponse
      * @return mixed
      */
-    public function view(User $user, Request $request)
+    public function view(User $user, RequestResponse $requestResponse)
     {
         //
     }
@@ -41,19 +41,20 @@ class RequestPolicy
      */
     public function create(User $user)
     {
-        $isUser = $user->belongsToRoles('user');
-
-        return $isUser;
+        $isAdmin = $user->belongsToRoles('admin');
+        $isEditor = $user->belongsToRoles('editor');
+        
+        return $isAdmin || $isEditor;
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Request  $request
+     * @param  \App\RequestResponse  $requestResponse
      * @return mixed
      */
-    public function update(User $user, Request $request)
+    public function update(User $user, RequestResponse $requestResponse)
     {
         //
     }
@@ -62,10 +63,10 @@ class RequestPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Request  $request
+     * @param  \App\RequestResponse  $requestResponse
      * @return mixed
      */
-    public function delete(User $user, Request $request)
+    public function delete(User $user, RequestResponse $requestResponse)
     {
         //
     }
@@ -74,10 +75,10 @@ class RequestPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Request  $request
+     * @param  \App\RequestResponse  $requestResponse
      * @return mixed
      */
-    public function restore(User $user, Request $request)
+    public function restore(User $user, RequestResponse $requestResponse)
     {
         //
     }
@@ -86,10 +87,10 @@ class RequestPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Request  $request
+     * @param  \App\RequestResponse  $requestResponse
      * @return mixed
      */
-    public function forceDelete(User $user, Request $request)
+    public function forceDelete(User $user, RequestResponse $requestResponse)
     {
         //
     }

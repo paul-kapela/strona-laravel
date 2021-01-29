@@ -2,6 +2,7 @@
 
 return [
     'more' => 'More',
+    'all' => 'All',
     'assignment' => 'Assignment',
     'user' => 'User',
     'editor' => 'Editor',
@@ -18,4 +19,5 @@ return [
     'answer' => 'Answer',
     'answers' => 'Answers',
     'no_answers' => 'No answers',
+    'price' => 'Price',
 ];

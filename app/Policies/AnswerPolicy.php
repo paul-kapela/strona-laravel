@@ -41,10 +41,7 @@ class AnswerPolicy
      */
     public function create(User $user)
     {
-        $isAdmin = $user->belongsToRoles('admin');
-        $isEditor = $user->belongsToRoles('editor');
-        
-        return $isAdmin || $isEditor;
+        return true;
     }
 
     /**

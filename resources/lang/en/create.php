@@ -2,6 +2,7 @@
 
 return [
     'send' => 'Send',
+    'edit' => 'Edit',
     'save' => 'Save',
     'an' => 'an ',
     'assignment' => 'assignment',

@@ -23,4 +23,7 @@ return [
   // verify_email
   'verify' => 'You have to verify your e-mail address in order to use this service.',
   'resend_verify_link' => 'If you have not got the verification e-mail, click here to resend it.',
+
+  // request_rejected
+  'request_rejected' => 'Your request of solving the assignment until :date has been rejected. Try again with later date.',
 ];
