@@ -20,4 +20,7 @@ return [
     'answers' => 'Answers',
     'no_answers' => 'No answers',
     'price' => 'Price',
+    'not_available' => 'This content is not available.',
+    'pay_request' => 'In order to access this answer, please pay for your request.',
+    'buy_plan' => 'Buy a plan to see all the answers.'
 ];

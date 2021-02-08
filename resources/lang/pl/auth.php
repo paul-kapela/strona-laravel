@@ -22,6 +22,8 @@ return [
     'username' => 'Nazwa użytkownika',
     'email' => 'Adres e-mail',
     'repeat_password' => 'Powtórz hasło',
+    'confirm_identity' => 'Potwierdź swoją tożsamość',
+    'captcha' => 'Przepisz kod z obrazka',
 
     'reset_password' => 'Zresetuj hasło',
     'send_reset_link' => 'Wyślij link do zmiany hasła',

@@ -6,29 +6,27 @@
     <div class="col-md-8">
       <div class="card">
         <div class="card-header d-flex align-items-baseline">
-          <span class="mr-auto">{{ __('actions.delete').' '.__('create.answer') }}</span>
+          <span class="mr-auto">{{ __('actions.delete').' '.__('request.request') }}</span>
 
           @component('components.close-button', [
-            'url' => route('assignments.show', $answer->assignment()->get()->first())
+            'back' => true
           ])
           @endcomponent
         </div>
 
         <div class="card-body">
-          @component('components.answer', [
-            'answer' => $answer,
-            'multilang' => Auth::user()->belongsToRoles('editor', 'admin'),
-            'withoutActions' => true
+          @component('components.request', [
+            'request' => $request
           ])
           @endcomponent
 
           <hr>
 
-          <form method="POST" action="{{ route('answers.destroy', $answer) }}">
+          <form method="POST" action="{{ route('requests.destroy', $request) }}">
             @csrf
             @method('DELETE')
 
-            <label for="delete-confirm">{{ __('actions.delete_confirmation').__('create.answer').'?' }}</label>
+            <label for="delete-confirm">{{ __('actions.delete_confirmation').__('request.request').'?' }}</label>
 
             <div class="form-group row mb-0">
               <div class="col-md-6">
@@ -37,7 +35,7 @@
                 </button>
               </div>
             </div>
-          </form> 
+          </form>
         </div>
       </div>
     </div>

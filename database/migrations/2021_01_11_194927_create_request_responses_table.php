@@ -18,7 +18,6 @@ class CreateRequestResponsesTable extends Migration
 
             $table->foreignId('user_id');
             $table->foreignId('request_id');
-            $table->foreignId('answer_id')->nullable();
 
             $table->unsignedInteger('price');
             $table->boolean('accepted');

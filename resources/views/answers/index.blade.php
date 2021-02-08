@@ -21,7 +21,7 @@
                         <div class="card-body">
                             @component('components.answer', [
                                 'answer' => $answer,
-                                'multilang' => policy(\App\Answer::class)->create(Auth::user()),
+                                'multilang' => Auth::user()->belongsToRoles('editor', 'admin'),
                                 'withoutActions' => true
                             ])
                             @endcomponent

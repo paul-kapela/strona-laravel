@@ -26,4 +26,13 @@ return [
 
   // request_rejected
   'request_rejected' => 'Your request of solving the assignment until :date has been rejected. Try again with later date.',
+
+  // request_responded
+  'request_responded' => 'Your request of solving the assignment until :date has been accepted by the editor. Decide whether you agree with the given price.',
+
+  // offer_accepted
+  'offer_accepted' => 'Your offer has been accepted.',
+
+  // offer_rejected
+  'offer_rejected' => 'Your offer has been rejected.',
 ];

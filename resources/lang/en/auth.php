@@ -23,6 +23,8 @@ return [
     'username' => 'Username',
     'email' => 'Email address',
     'repeat_password' => 'Repeat password',
+    'confirm_identity' => 'Confirm your identity',
+    'captcha' => 'Type the code from the picture',
 
     'reset_password' => 'Reset password',
     'send_reset_link' => 'Send password change link',

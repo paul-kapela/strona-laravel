@@ -15,4 +15,14 @@ return [
   'due_date' => 'Due date',
 
   'show_all' => 'Show all',
+
+  'accept_offer' => 'Accept the offer',
+  'reject_offer' => 'Reject the offer',
+
+  'status' => 'Status',
+  'pending' => 'Pending',
+  'accepted_by_editor' => 'Accepted by editor',
+  'accepted_by_user' => 'Accepted by user',
+  'ready' => 'Ready',
+  'paid' => 'Paid',
 ];

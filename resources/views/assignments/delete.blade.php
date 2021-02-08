@@ -17,7 +17,7 @@
         <div class="card-body">
           @component('components/assignment', [
             'assignment' => $assignment,
-            'multilang' => policy(\App\Answer::class)->create(Auth::user())
+            'multilang' => Auth::user()->belongsToRoles('editor', 'admin')
           ])
           @endcomponent
 
@@ -31,7 +31,7 @@
 
             <div class="form-group row mb-0">
               <div class="col-md-6">
-                <button id="delete-confirm" type="submit" class="btn btn-primary">
+                <button id="delete-confirm" type="submit" class="btn btn-danger">
                   {{ __('actions.delete') }}
                 </button>
               </div>

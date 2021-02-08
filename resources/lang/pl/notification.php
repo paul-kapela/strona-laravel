@@ -26,4 +26,13 @@ return [
 
   // request_rejected
   'request_rejected' => 'Twoje zapytanie o rozwiązanie zadania do dnia :date zostało odrzucone. Spróbuj jeszcze raz z późniejszą datą.',
+
+  // request_responded
+  'request_responded' => 'Twoje zapytanie o rozwiązanie zadania do dnia :date zostało zaakceptowane przez edytora. Zdecyduj, czy zgadzasz się z podaną ceną.',
+
+  // offer_accepted
+  'offer_accepted' => 'Twoja oferta została zaakceptowana.',
+
+  // offer_rejected
+  'offer_rejected' => 'Twoja oferta została odrzucona.',
 ];

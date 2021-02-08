@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class RequestResponse extends Model
 {
+    protected $guarded = [];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -18,6 +20,6 @@ class RequestResponse extends Model
 
     public function answer()
     {
-        return $this->hasOne(Answer::class);
+        return $this->hasOne(Answer::class, 'request_response_id');
     }
 }

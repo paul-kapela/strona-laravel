@@ -24,7 +24,7 @@
               <div class="card-body">
                 @component('components.assignment', [
                   'assignment' => $assignment,
-                  'multilang' => policy(\App\Answer::class)->create(Auth::user()),
+                  'multilang' => Auth::user()->belongsToRoles('editor', 'admin'),
                   'thumb' => true
                 ])
                 @endcomponent

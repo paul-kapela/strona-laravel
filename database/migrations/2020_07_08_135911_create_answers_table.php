@@ -18,6 +18,7 @@ class CreateAnswersTable extends Migration
 
             $table->foreignId('user_id');
             $table->foreignId('assignment_id');
+            $table->foreignId('request_response_id')->nullable();
 
             $table->text('content_pl');
             $table->text('content_en');

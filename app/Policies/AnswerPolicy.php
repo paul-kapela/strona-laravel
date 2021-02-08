@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Answer;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class AnswerPolicy
@@ -30,7 +31,28 @@ class AnswerPolicy
      */
     public function view(User $user, Answer $answer)
     {
-        //
+        // answer from user's request - if he paid for it
+        // normal answer - if user has bought a plan and it's valid
+
+        if ($answer->requestResponse()->exists() && $answer->requestResponse->paid)
+        {
+            return true;
+        }
+        
+        if ($user->has_access_to_date == null)
+        {
+            return false;
+        }
+
+        $today = Carbon::now();
+        $accessDate = Carbon::createFromFormat('Y-m-d', $user->has_access_to_date);
+
+        if ($accessDate->lte($today))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**

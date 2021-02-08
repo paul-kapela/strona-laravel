@@ -29,7 +29,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
 
             $table->unsignedInteger('bonus_points')->default(0);
-            $table->timestamp('has_access_to_date')->nullable();
+            $table->date('has_access_to_date')->nullable();
             
             $table->string('password');
 

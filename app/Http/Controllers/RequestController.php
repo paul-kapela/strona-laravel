@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Assignment;
-use App\Notifications\RequestRejected;
-use App\Notifications\RequestResponded;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
+
+use App\Notifications\RequestRejected;
+use App\Notifications\RequestResponded;
+use App\Notifications\OfferAccepted;
+use App\Notifications\OfferRejected;
 
 class RequestController extends Controller
 {
@@ -76,7 +79,7 @@ class RequestController extends Controller
 
     public function create(Assignment $assignment)
     {
-        $this->authorize('create', \App\Request::class, auth()->user());
+        $this->authorize('create', \App\Request::class, auth()->user(), $assignment);
 
         return view('requests.create', compact('assignment'));
     }
@@ -92,7 +95,7 @@ class RequestController extends Controller
     {
         $user = auth()->user();
 
-        $this->authorize('create', \App\Request::class, $user);
+        $this->authorize('create', \App\Request::class, $user, $assignment);
 
         $data = request()->validate([
             'due_date' => ['required', 'date', 'date_format:Y-m-d', 'after:today']
@@ -127,12 +130,16 @@ class RequestController extends Controller
     {
         $this->authorize('delete', $request);
 
-        return view('request.delete', compact('request'));
+        return view('requests.delete', compact('request'));
     }
 
-    public function destroy()
+    public function destroy(\App\Request $request)
     {
-        
+        $this->authorize('delete', $request);
+
+        $request->delete();
+
+        return redirect(route('requests.index'));
     }
 
     public function accept(\App\Request $request)
@@ -163,7 +170,7 @@ class RequestController extends Controller
 
         $requestResponse->save();
 
-        Notification::send($request->user, new RequestResponded());
+        Notification::send($request->user, new RequestResponded($request));
 
         return redirect(route('requests.index'));
     }
@@ -180,5 +187,51 @@ class RequestController extends Controller
         $request->delete();
 
         return redirect(route('requests.index'));
+    }
+
+    public function acceptOffer(\App\Request $request)
+    {
+        $user = auth()->user();
+
+        if (!$user->belongsToRoles('user'))
+            abort(401);
+        
+        $updatedData = [
+            'accepted' => true
+        ];
+
+        $request->requestResponse->update($updatedData);
+
+        Notification::send($request->requestResponse->user, new OfferAccepted($request));
+
+        return redirect(route('requests.index'));
+    }
+
+    public function rejectOffer(\App\Request $request)
+    {
+        $user = auth()->user();
+
+        if (!$user->belongsToRoles('user'))
+            abort(401);
+
+        Notification::send($request->requestResponse->user, new OfferRejected($request));
+        
+        $request->requestResponse->delete();
+
+        return redirect(route('requests.index'));
+    }
+
+    public function payTest(\App\Request $request)
+    {
+        $user = auth()->user();
+
+        if (!$user->belongsToRoles('user'))
+            abort(401);
+
+        $request->requestResponse->update([
+            'paid' => true
+        ]);
+
+        return redirect(route('assignments.show', $request->assignment));
     }
 }

@@ -28,7 +28,7 @@
             <div class="form-group row">
               <label for="price" class="col-md-4 col-form-label">{{ __('content.price') }}: </label>
 
-              <div class="col-md-6">
+              <div class="col-md-6 d-flex align-items-baseline">
                 <input
                   id="price"
                   type="number"
@@ -38,6 +38,8 @@
                   name="price"
                   value="{{ old('price') }}"
                 >
+
+                <p class="ml-2" >zł</p>
               </div>
             </div>
 

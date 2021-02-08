@@ -21,7 +21,7 @@
                     <div class="card-body">
                         @component('components/assignment', [
                             'assignment' => $assignment,
-                            'multilang' => policy(\App\Answer::class)->create(Auth::user())
+                            'multilang' => Auth::user()->belongsToRoles('editor', 'admin')
                         ])
                         @endcomponent
 
@@ -66,7 +66,7 @@
                             @component('components/editor', [
                                 'model' => 'assignment',
                                 'entry' => $assignment,
-                                'multilang' => policy(\App\Answer::class)->create(Auth::user()),
+                                'multilang' => Auth::user()->belongsToRoles('editor', 'admin'),
                             ])
                             @endcomponent
                         </form>

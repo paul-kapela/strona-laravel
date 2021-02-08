@@ -37,8 +37,14 @@ class Answer extends Model
         return $this->belongsTo(Assignment::class);
     }
 
-    public function request()
+    public function requestResponse()
     {
         return $this->belongsTo(RequestResponse::class);
+    }
+
+    public function canDisplay()
+    {
+        // assignment->requests()->first()->exists() && $answer->assignment->requests()->   
+        return false;
     }
 }

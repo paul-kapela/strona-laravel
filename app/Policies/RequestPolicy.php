@@ -39,11 +39,15 @@ class RequestPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, \App\Assignment $assignment)
     {
         $isUser = $user->belongsToRoles('user');
+        $userHasAlreadySent = $isUser && $assignment->requests()->whereHas('user', function ($query) use ($user) {
+            $query->where('id', '=', $user->id);
+        })->first()->exists();
+        $assignmentHasAnswer = $assignment->answers()->first()->exists();
 
-        return $isUser;
+        return $isUser && !$assignmentHasAnswer;
     }
 
     /**
@@ -55,7 +59,12 @@ class RequestPolicy
      */
     public function update(User $user, Request $request)
     {
-        //
+        $isUser = $user->belongsToRoles('user');
+        $isEditorOrAdmin = $user->belongsToRoles('editor', 'admin');
+
+        $hasResponse = $request->requestResponse()->exists();
+
+        return ($isUser && !$hasResponse) || $isEditorOrAdmin;
     }
 
     /**
@@ -67,7 +76,12 @@ class RequestPolicy
      */
     public function delete(User $user, Request $request)
     {
-        //
+        $isUser = $user->belongsToRoles('user');
+        $isEditorOrAdmin = $user->belongsToRoles('editor', 'admin');
+
+        $hasResponse = $request->requestResponse()->exists();
+
+        return ($isUser && !$hasResponse) || $isEditorOrAdmin;
     }
 
     /**

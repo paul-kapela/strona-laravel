@@ -20,4 +20,7 @@ return [
     'answers' => 'Odpowiedzi',
     'no_answers' => 'Brak odpowiedzi',
     'price' => 'Cena',
+    'not_available' => 'Ta zawartość jest niedostępna.',
+    'pay_request' => 'Aby uzyskać dostęp do tej odpowiedzi, opłać swoje zapytanie.',
+    'buy_plan' => 'Kup plan, aby uzyskać dostęp do wszystkich odpowiedzi.'
 ];

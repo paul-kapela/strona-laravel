@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Answer;
+use App\RequestResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -31,18 +32,18 @@ class AnswersController extends Controller
         {
             if ($subject)
             {
-                $answers = \App\Answer::whereHas('assignment', function ($query) {
-                    $query->whereHas('subject', function ($query) {
-                        $query->where('name', '=', request('subject'));
+                $answers = \App\Answer::whereHas('assignment', function ($query) use ($subject) {
+                    $query->whereHas('subject', function ($query) use ($subject) {
+                        $query->where('name', '=', $subject);
                     });
                 });
             }
             
             if ($grade)
             {
-                $answers = \App\Answer::whereHas('assignment', function ($query) {
-                    $query->whereHas('grade', function ($query) {
-                        $query->where('name', '=', request('grade'));
+                $answers = \App\Answer::whereHas('assignment', function ($query) use ($grade) {
+                    $query->whereHas('grade', function ($query) use ($grade) {
+                        $query->where('name', '=', $grade);
                     });
                 });
             }
@@ -133,6 +134,17 @@ class AnswersController extends Controller
         $answer->attachments = serialize($attachments);
         $answer->user()->associate(Auth::user());
         $answer->assignment()->associate($assignment);
+
+        if (policy(RequestResponse::class)->create($user) && request('request_response'))
+        {
+            $requestResponse = RequestResponse::findOrFail(request('request_response'));
+
+            if ($user->id = $requestResponse->user_id)
+            {
+                $answer->requestResponse()->associate($requestResponse);
+            }
+        }
+
         $answer->save();
 
         return redirect(route('assignments.show', $assignment));

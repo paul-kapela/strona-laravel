@@ -43,6 +43,28 @@
           ])
           @endcomponent
         @break
+      
+      @case('App\Notifications\RequestResponded')
+          @component('notifications/types/request_responded', [
+            'notification' => $notification
+          ])
+          @endcomponent  
+        @break
+
+      @case('App\Notifications\OfferAccepted')
+          @component('notifications/types/offer_accepted', [
+            'notification' => $notification
+          ])
+          @endcomponent
+        @break
+
+      @case('App\Notifications\OfferRejected')
+          @component('notifications/types/offer_rejected', [
+            'notification' => $notification
+          ])
+          @endcomponent
+        @break
+
       @default
         @break
     @endswitch

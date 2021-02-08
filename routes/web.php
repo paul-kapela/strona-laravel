@@ -49,9 +49,13 @@ Route::get('requests/{request}/edit', 'RequestController@edit')->name('requests.
 Route::patch('requests/{request}', 'RequestController@update')->name('requests.update');
 Route::get('requests/{request}/accept', 'RequestController@accept')->name('requests.accept');
 Route::post('requests/{request}/accept', 'RequestController@answer')->name('requests.answer');
-Route::post('requests/{request}', 'RequestController@reject')->name('requests.reject');
+Route::post('requests/{request}/reject', 'RequestController@reject')->name('requests.reject');
 Route::get('requests/{request}/delete', 'RequestController@delete')->name('requests.delete');
 Route::delete('requests/{request}', 'RequestController@destroy')->name('requests.destroy');
+
+Route::post('requests/{request}/offer/accept', 'RequestController@acceptOffer')->name('requests.accept_offer');
+Route::post('requests/{request}/offer/reject', 'RequestController@rejectOffer')->name('requests.reject_offer');
+Route::post('requests/{request}/offer/pay_test', 'RequestController@payTest')->name('requests.test_pay');
 
 Route::get('answers', 'AnswersController@index')->name('answers.index'); // done
 Route::get('assignments/{assignment}/answer', 'AnswersController@create')->name('answers.create'); // done

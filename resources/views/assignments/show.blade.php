@@ -27,7 +27,7 @@
         <div class="card-body">
           @component('components.assignment', [
             'assignment' => $assignment,
-            'multilang' => policy(\App\Answer::class)->create(Auth::user())
+            'multilang' => Auth::user()->belongsToRoles('editor', 'admin')
           ])
           @endcomponent
         </div>
@@ -43,7 +43,7 @@
             <a href="{{ route('answers.create', $assignment) }}" class="mr-2 text-white">{{ __('create.send').' '.__('create.answer') }}</a>
           @endif
   
-          @if(policy(\App\Request::class)->create(Auth::user()))
+          @if(policy(\App\Request::class)->create(Auth::user(), $assignment))
             <a href="{{ route('requests.create', ['assignment' => $assignment->id]) }}" class="mr-2 text-white">{{ __('request.add').' '.__('request.request') }}</a>
           @endif
 
@@ -61,7 +61,7 @@
             <div class="card-body">
               @component('components.answer', [
                 'answer' => $answer,
-                'multilang' => policy(\App\Answer::class)->create(Auth::user())
+                'multilang' => Auth::user()->belongsToRoles('editor', 'admin')
               ])
               @endcomponent
             </div>

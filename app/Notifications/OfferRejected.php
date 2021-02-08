@@ -2,13 +2,12 @@
 
 namespace App\Notifications;
 
-use App\Request;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class RequestResponded extends Notification
+class OfferRejected extends Notification
 {
     use Queueable;
 
@@ -19,7 +18,7 @@ class RequestResponded extends Notification
      *
      * @return void
      */
-    public function __construct(Request $request)
+    public function __construct(\App\Request $request)
     {
         $this->request = $request;
     }
