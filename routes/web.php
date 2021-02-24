@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChangePasswordController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,6 +28,9 @@ Route::get('users/{user}', 'UsersController@show')->name('users.show'); // done
 Route::patch('users/{user}', 'UsersController@update')->name('users.update'); // done
 Route::get('users/{user}/edit', 'UsersController@edit')->name('users.edit'); // done
 
+Route::get('password/change', 'ChangePasswordController@change')->name('password.change');
+Route::post('password/change', 'ChangePasswordController@new')->name('password.new');
+
 Route::get('email/change', 'EmailChangeController@verify')->name('email.change'); // done
 
 Route::get('plans', 'PlanController@index')->name('plans.index');
@@ -39,8 +43,8 @@ Route::patch('assignments/{assignment}', 'AssignmentsController@update')->name('
 Route::delete('assignments/{assignment}', 'AssignmentsController@destroy')->name('assignments.destroy'); // done
 Route::get('assignments/{assignment}/edit', 'AssignmentsController@edit')->name('assignments.edit'); // done
 Route::get('assignments/{assignment}/delete', 'AssignmentsController@delete')->name('assignments.delete'); // done
-Route::post('assignments/{assignment}/imageUpload', 'AssignmentsController@imageUploadStore')->name('assignments.imageUploadStore'); // done
-Route::delete('assignments/{assignment}/imageUpload', 'AssignmentsController@imageUploadDestroy')->name('assignments.imageUploadDestroy'); // done
+Route::post('assignments/{assignment}/imageUpload', 'AssignmentsController@uploadStore')->name('assignments.imageUploadStore'); // done
+Route::delete('assignments/{assignment}/imageUpload', 'AssignmentsController@uploadDestroy')->name('assignments.imageUploadDestroy'); // done
 
 Route::get('requests', 'RequestController@index')->name('requests.index');
 Route::get('assignments/{assignment}/request/create', 'RequestController@create')->name('requests.create'); // done
@@ -60,13 +64,16 @@ Route::post('requests/{request}/offer/pay_test', 'RequestController@payTest')->n
 Route::get('answers', 'AnswersController@index')->name('answers.index'); // done
 Route::get('assignments/{assignment}/answer', 'AnswersController@create')->name('answers.create'); // done
 Route::post('assignments/{assignment}/answer', 'AnswersController@store')->name('answers.store'); // done
-Route::get('answer/{answer}', 'AnswersController@show')->name('answers.show'); // done
-Route::patch('answer/{answer}', 'AnswersController@update')->name('answers.update'); // done
-Route::delete('answer/{answer}', 'AnswersController@destroy')->name('answers.destroy'); // done
-Route::get('answer/{answer}/edit', 'AnswersController@edit')->name('answers.edit'); // done
-Route::get('answer/{answer}/delete', 'AnswersController@delete')->name('answers.delete'); // done
-Route::post('answers/{answer}/imageUpload', 'AnswersController@imageUploadStore')->name('answers.imageUploadStore'); // done
-Route::delete('answers/{answer}/imageUpload', 'AnswersController@imageUploadDestroy')->name('answers.imageUploadDestroy'); // done
+Route::get('answers/{answer}', 'AnswersController@show')->name('answers.show'); // done
+Route::patch('answers/{answer}', 'AnswersController@update')->name('answers.update'); // done
+Route::delete('answers/{answer}', 'AnswersController@destroy')->name('answers.destroy'); // done
+Route::get('answers/{answer}/edit', 'AnswersController@edit')->name('answers.edit'); // done
+Route::get('answers/{answer}/delete', 'AnswersController@delete')->name('answers.delete'); // done
+Route::post('answers/{answer}/imageUpload', 'AnswersController@uploadStore')->name('answers.imageUploadStore'); // done
+Route::delete('answers/{answer}/imageUpload', 'AnswersController@uploadDestroy')->name('answers.imageUploadDestroy'); // done
+
+Route::get('answers/{answer}/accept', 'AnswersController@approve')->name('answers.approve');
+Route::post('answers/{answer}', 'AnswersController@accept')->name('answers.accept');
 
 Route::post('imageUpload', 'ImageUploadController@store')->name('imageUpload.store'); // done
 Route::delete('imageUpload', 'ImageUploadController@destroy')->name('imageUpload.destroy'); // done

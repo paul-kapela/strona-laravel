@@ -79,7 +79,8 @@ class RequestController extends Controller
 
     public function create(Assignment $assignment)
     {
-        $this->authorize('create', \App\Request::class, auth()->user(), $assignment);
+        if (!policy(\App\Request::class)->create(auth()->user(), $assignment))
+            abort(403);
 
         return view('requests.create', compact('assignment'));
     }
@@ -95,7 +96,8 @@ class RequestController extends Controller
     {
         $user = auth()->user();
 
-        $this->authorize('create', \App\Request::class, $user, $assignment);
+        if (!policy(\App\Request::class)->create($user, $assignment))
+            abort(403);
 
         $data = request()->validate([
             'due_date' => ['required', 'date', 'date_format:Y-m-d', 'after:today']

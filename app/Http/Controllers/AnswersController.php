@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Answer;
+use App\Notifications\AnswerAccepted;
+use App\Notifications\AnswerRejected;
 use App\RequestResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -10,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 
 class AnswersController extends Controller
 {
@@ -27,6 +30,7 @@ class AnswersController extends Controller
         $grade = request('grade');
         $query = request('query');
         $user = request('user');
+        $unapproved = request('unapproved');
 
         if ($subject || $grade)
         {
@@ -76,7 +80,19 @@ class AnswersController extends Controller
             }
         }
 
-        if ($subject || $grade || $user || $query)
+        if ($unapproved)
+        {
+            if ($subject || $grade || $user || $query)
+            {
+                $answers = $answers->where('accepted', '=', 0);
+            }
+            else
+            {
+                $answers = \App\Answer::where('accepted', '=', 0);
+            }
+        }
+
+        if ($subject || $grade || $user || $query || $unapproved)
         {
             $answers = $answers->latest()->paginate(5);
         }
@@ -128,6 +144,7 @@ class AnswersController extends Controller
         Storage::deleteDirectory('public/cache/'.$data['image-upload-token']);
 
         $answer = new Answer();
+        $answer->accepted = $user->belongsToRoles('admin', 'editor');
         $answer->content_pl = (array_key_exists('content_pl', $data) && $data['content_pl'] != null) ? $data['content_pl'] : '';
         $answer->content_en = (array_key_exists('content_en', $data) && $data['content_en'] != null) ? $data['content_en'] : '';
         $answer->image_directory = $image_directory;
@@ -176,7 +193,6 @@ class AnswersController extends Controller
         $this->authorize('delete', $answer);
 
         return view('answers.delete', compact('answer'));
-        // TODO: the view
     }
 
     public function destroy(\App\Answer $answer)
@@ -187,16 +203,19 @@ class AnswersController extends Controller
 
         Storage::deleteDirectory('public/uploads/'.$answer->image_directory);
 
+        if ($answer->user->belongsToRoles('user'))
+            Notification::send($answer->user, new AnswerRejected($answer));
+
         $answer->delete();
 
         return redirect(route('assignments.show', $assignment));
     }
 
-    public function imageUploadStore(\App\Answer $answer)
+    public function uploadStore(\App\Answer $answer)
     {
         $this->authorize('update', $answer);
 
-        $validExtensions = array('jpeg', 'jpg', 'png');
+        $validExtensions = array('jpeg', 'jpg', 'png', 'doc', 'docx', 'pdf');
 
         $data = request()->validate([
             'token' => 'required',
@@ -211,8 +230,6 @@ class AnswersController extends Controller
 
             $imagePath = $data['image']->store('uploads/'.$answer->image_directory, 'public');
 
-            Log::channel('stack')->info($imagePath);
-
             $attachments[] = 'public/'.$imagePath;
 
             $answer->attachments = serialize($attachments);
@@ -224,7 +241,7 @@ class AnswersController extends Controller
         ]);
     }
 
-    public function imageUploadDestroy(\App\Answer $answer)
+    public function uploadDestroy(\App\Answer $answer)
     {
         $this->authorize('update', $answer);
 
@@ -244,5 +261,41 @@ class AnswersController extends Controller
         return response()->json([
             'message' => 'success'
         ]);
+    }
+
+    public function approve(\App\Answer $answer)
+    {
+        if (!auth()->user()->belongsToRoles('editor', 'admin'))
+            abort(401);
+
+        return view('answers.accept', compact('answer'));
+    }
+
+    public function accept(\App\Answer $answer)
+    {
+        $user = auth()->user();
+
+        $data = request()->validate([
+            'points' => ['required', 'integer', 'gt:0']
+        ]);
+
+        if (!$user->belongsToRoles('editor', 'admin'))
+            abort(401);
+
+        $updatedData = [
+            'accepted' => true
+        ];
+
+        $answer->update($updatedData);
+
+        $updatedData = [
+            'bonus_points' => $user->bonus_points + $data['points']
+        ];
+
+        $user->update($updatedData);
+
+        Notification::send($answer->user, new AnswerAccepted($answer, $data['points']));
+
+        return redirect(route('answers.show', $answer));
     }
 }

@@ -40,7 +40,7 @@ class UsersController extends Controller
     {
         $userModel = User::findOrFail($user->id);
 
-        $this->authorize('update', $user);
+        $this->authorize('update', auth()->user());
 
         $data = request()->validate([
             'username' => ['string', 'max:30'],

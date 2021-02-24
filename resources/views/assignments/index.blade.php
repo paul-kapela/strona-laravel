@@ -3,8 +3,10 @@
 @section('content')
 <div class="container">
   <div class="row justify-content-center">
-    @component('components.subject-select')
-    @endcomponent
+    <div class="col-md-2">
+      @component('components.subject-select')
+      @endcomponent
+    </div>
 
     <div class="col-md-8">
       @component('components.search-bar', [

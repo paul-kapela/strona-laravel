@@ -53,11 +53,11 @@ export default {
         },
         checkExtensions() {
             for (let i = 0; i < this.files.length; i++) {
-                if (!(/image/g.test(this.files[i].type)) && this.files[i].type != 'image/tiff') {
+                if ((!(/image/g.test(this.files[i].type)) || (this.files[i].type == 'application/msword') || (this.files[i].type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') || (this.files[i].type == 'application/pdf')) && this.files[i].type != 'image/tiff') {
                     this.reset();
 
                     this.error = true;
-                    this.$refs.errorInfo.innerHTML = 'Załącznikami mogą być tylko zdjęcia. Zdjęcie nie może posiadać rozszerzenia TIFF.';
+                    this.$refs.errorInfo.innerHTML = 'Załącznikami mogą być tylko zdjęcia i pliki Word oraz PDF. Zdjęcie nie może posiadać rozszerzenia TIFF.';
                 }
             }
         },

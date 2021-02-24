@@ -31,12 +31,28 @@ class AnswerPolicy
      */
     public function view(User $user, Answer $answer)
     {
+        // answer belongs to the user
         // answer from user's request - if he paid for it
         // normal answer - if user has bought a plan and it's valid
+
+        if ($user->belongsToRoles('admin', 'editor'))
+        {
+            return true;
+        }
+
+        if ($answer->user_id == $user->id)
+        {
+            return true;
+        }
 
         if ($answer->requestResponse()->exists() && $answer->requestResponse->paid)
         {
             return true;
+        }
+
+        if ($answer->accepted == false)
+        {
+            return false;
         }
         
         if ($user->has_access_to_date == null)

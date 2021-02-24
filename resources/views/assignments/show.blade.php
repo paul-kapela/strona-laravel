@@ -55,7 +55,7 @@
 
       <hr>
 
-      @if($assignment->answers()->get()->first())
+      @if($assignment->answers()->exists())
         @foreach($assignment->answers()->get() as $answer)
           <div class="card mt-3">
             <div class="card-body">

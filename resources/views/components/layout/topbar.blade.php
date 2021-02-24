@@ -33,19 +33,25 @@
               </a>
 
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                @if(Auth::user()->belongsToRoles('editor', 'admin'))
+                  <a class="dropdown-item" href="{{ route('answers.index') }}">{{ __('content.all').' '.__('profile.answers') }}</a>
+                @endif
+                
                 @if(policy(\App\Answer::class)->create(Auth::user()))
                   <a class="dropdown-item" href="{{ route('answers.index', [ 'user' => Auth::user()->id ]) }}">{{ __('profile.my').' '.__('profile.answers') }}</a>
                 @endif
 
                 <a class="dropdown-item" href="{{ route('assignments.index', [ 'user' => Auth::user()->id ]) }}">{{ __('profile.my').' '.__('profile.assignments') }}</a>
 
-                @if(Auth::user()->roles()->get()->first()->name == \App\Role::where('name', '=', 'user')->get()->first()->name)
+                @if(Auth::user()->belongsToRoles('user'))
                   <a class="dropdown-item" href="{{ route('requests.index') }}">{{ __('profile.my').' '.lcfirst(__('request.title')) }}</a>
 
                   <a class="dropdown-item" href="{{ route('plans.index') }}">{{ __('plan.my').' '.__('plan.plan') }}</a>
                 @else
                   <a class="dropdown-item" href="{{ route('requests.index') }}">{{ __('content.all').' '.lcfirst(__('request.title')) }}</a>
                 @endif
+
+                <div class="dropdown-divider"></div>
 
                 <a class="dropdown-item" href="{{ route('users.show', Auth::user()->id) }}">{{ __('profile.profile') }}</a>                          
 

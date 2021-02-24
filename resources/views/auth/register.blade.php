@@ -110,7 +110,7 @@
                 <div class="w-100 d-flex align-items-center alert alert-primary">
                   <p class="mr-3">{{ __('auth.captcha') }}: </p>
 
-                  {!! Captcha::img('inverse') !!}
+                  {!! Captcha::img('flat') !!}
                 </div>
               </div>
             </div>

@@ -12,6 +12,15 @@ return [
     |
     */
 
+    'change_password' => 'Zmień hasło',
+    'current_password' => 'Obecne hasło',
+    'new_password' => 'Nowe hasło',
+    'confirm_password' => 'Potwierdź nowe hasło',
+    'change' => 'Zmień',
+    'changed' => 'Twoje hasło zostało zmienione pomyślnie!',
+    'changed_topic' => 'hasło zostało zmienione',
+    'change_not_requested' => "Jeśli to nie Ty, użyj formularza resetowania hasła.",
+
     'reset'     => 'Hasło zostało zresetowane!',
     'sent'      => 'Link do zresetowania hasła został wysłany!',
     'throttled' => 'Proszę zaczekać zanim spróbujesz ponownie.',

@@ -21,7 +21,7 @@
         <div class="card-body">
           @component('components/assignment', [
             'assignment' => $assignment,
-            'multilang' => true
+            'multilang' => Auth::user()->belongsToRoles('editor', 'admin')
           ])
           @endcomponent
 
@@ -31,7 +31,7 @@
             @csrf
 
             @component('components/editor', [
-              'multilang' => true
+              'multilang' => Auth::user()->belongsToRoles('editor', 'admin')
             ])
             @endcomponent
           </form>

@@ -65,6 +65,27 @@
           @endcomponent
         @break
 
+      @case('App\Notifications\AnswerAccepted')
+          @component('notifications/types/answer_accepted', [
+            'notification' => $notification
+          ])
+          @endcomponent
+        @break
+
+      @case('App\Notifications\AnswerRejected')
+          @component('notifications/types/answer_rejected', [
+            'notification' => $notification
+          ])
+          @endcomponent
+        @break
+
+      @case('App\Notifications\PasswordChanged')
+          @component('notifications/types/password_changed', [
+            'notification' => $notification
+          ])
+          @endcomponent
+        @break
+
       @default
         @break
     @endswitch

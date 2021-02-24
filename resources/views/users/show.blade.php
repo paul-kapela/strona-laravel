@@ -15,7 +15,9 @@
               <h3 class="mr-3">{{ $user->username }}</h3>
 
               @can('update', $user)
-                <a href="{{ route('users.edit', $user) }}">{{ __('profile.edit') }}</a>
+                <a href="{{ route('users.edit', $user) }}" class="mr-2">{{ __('profile.edit') }}</a>
+
+                <a href="{{ route('password.change') }}">{{ __('passwords.change_password') }}</a>
               @endcan
             </div>
           </div>
@@ -85,6 +87,14 @@
             <div class="d-flex mt-2">
               <p class="mb-0 alert alert-success" role="alert">
                 {{ __('email_change.changed', ['newEmail' => Session::get('email_changed')]) }}
+              </p>
+            </div>
+          @endif
+
+          @if(Session::has('password_changed'))
+            <div class="d-flex mt-2">
+              <p class="mb-0 alert alert-success" role="alert">
+                {{ __('passwords.changed') }}
               </p>
             </div>
           @endif

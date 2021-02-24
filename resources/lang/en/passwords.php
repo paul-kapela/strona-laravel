@@ -13,6 +13,15 @@ return [
     |
     */
 
+    'change_password' => 'Change your password',
+    'current_password' => 'Current password',
+    'new_password' => 'New password',
+    'confirm_password' => 'Confirm your new password',
+    'change' => 'Change',
+    'changed' => 'Your password has been changed successfully!',
+    'changed_topic' => 'password changed',
+    'change_not_requested' => "If that was not you, please use the password restore form.",
+
     'reset' => 'Your password has been reset!',
     'sent' => 'We have emailed your password reset link!',
     'throttled' => 'Please wait before retrying.',

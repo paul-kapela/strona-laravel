@@ -35,4 +35,10 @@ return [
 
   // offer_rejected
   'offer_rejected' => 'Your offer has been rejected.',
+
+  // answer_accepted
+  'answer_accepted' => 'Your answer has been accepted and you have earned :points points.',
+
+  // answer_rejected
+  'answer_rejected' => 'Your answer for the assignment below has been rejected.',
 ];

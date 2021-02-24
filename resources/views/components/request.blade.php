@@ -16,7 +16,7 @@
   @endif
 
   <p class="mb-0">{{ __('request.due_date') }}: {{ $request->due_date }}</p>
-  <p class="mb-0">{{ __('request.status') }}: {{ __('request.'.$request->status()) }}</p>
+  <p class="mb-0">{{ __('content.status') }}: {{ __('request.'.$request->status()) }}</p>
 
   @if(($request->status() == 'ready' || $request->status() == 'paid') && policy(\App\Answer::class)->view(Auth::user(), $request->requestResponse->answer))
     <hr>

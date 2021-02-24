@@ -5,7 +5,14 @@
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">
-        <div class="card-header">{{ __('profile.edit').' '.lcfirst(__('profile.profile')) }}</div>
+        <div class="card-header d-flex align-items-baseline">
+          <span class="mr-auto">{{ __('profile.edit').' '.lcfirst(__('profile.profile')) }}</span>
+
+          @component('components.close-button', [
+            'back' => true
+          ])
+          @endcomponent
+        </div>
 
         <div class="card-body">
           <form action="{{ route('users.update', $user) }}" entype="multipart/form-data" method="post">
@@ -42,6 +49,7 @@
                     value="{{ old('email') ?? $user->email }}"
                     maxlength="50"
                     placeholder="email@example.com"
+                    required
                   >
 
                   <div class="d-flex align-items-center">

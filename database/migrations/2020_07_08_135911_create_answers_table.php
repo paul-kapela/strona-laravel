@@ -20,6 +20,7 @@ class CreateAnswersTable extends Migration
             $table->foreignId('assignment_id');
             $table->foreignId('request_response_id')->nullable();
 
+            $table->boolean('accepted');
             $table->text('content_pl');
             $table->text('content_en');
             $table->string('image_directory');

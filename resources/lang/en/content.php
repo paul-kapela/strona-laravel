@@ -15,6 +15,7 @@ return [
     'no_content_language' => 'No content of the assignment in ',
     'polish' => 'Polish',
     'english' => 'English',
+    'no_content' => 'No content',
     'no_images' => 'No images',
     'answer' => 'Answer',
     'answers' => 'Answers',
@@ -22,5 +23,10 @@ return [
     'price' => 'Price',
     'not_available' => 'This content is not available.',
     'pay_request' => 'In order to access this answer, please pay for your request.',
-    'buy_plan' => 'Buy a plan to see all the answers.'
+    'waiting_for_approval' => 'This answer waits for approval.',
+    'buy_plan' => 'Buy a plan to see all the answers.',
+    'status' => 'Status',
+    'approved' => 'Approved',
+    'unapproved' => 'Unapproved',
+    'points' => 'Points',
 ];

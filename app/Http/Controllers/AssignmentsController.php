@@ -190,11 +190,11 @@ class AssignmentsController extends Controller
         return redirect(route('assignments.index'));
     }
 
-    public function imageUploadStore(\App\Assignment $assignment)
+    public function uploadStore(\App\Assignment $assignment)
     {
         $this->authorize('update', $assignment);
 
-        $validExtensions = array('jpeg', 'jpg', 'png');
+        $validExtensions = array('jpeg', 'jpg', 'png', 'doc', 'docx', 'pdf');
 
         $data = request()->validate([
             'token' => 'required',
@@ -222,7 +222,7 @@ class AssignmentsController extends Controller
         ]);
     }
 
-    public function imageUploadDestroy(\App\Assignment $assignment)
+    public function uploadDestroy(\App\Assignment $assignment)
     {
         $this->authorize('update', $assignment);
 

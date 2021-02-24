@@ -44,8 +44,8 @@ class RequestPolicy
         $isUser = $user->belongsToRoles('user');
         $userHasAlreadySent = $isUser && $assignment->requests()->whereHas('user', function ($query) use ($user) {
             $query->where('id', '=', $user->id);
-        })->first()->exists();
-        $assignmentHasAnswer = $assignment->answers()->first()->exists();
+        })->exists();
+        $assignmentHasAnswer = $assignment->answers()->exists();
 
         return $isUser && !$assignmentHasAnswer;
     }

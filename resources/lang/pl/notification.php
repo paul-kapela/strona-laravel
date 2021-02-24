@@ -35,4 +35,10 @@ return [
 
   // offer_rejected
   'offer_rejected' => 'Twoja oferta została odrzucona.',
+
+  // answer_accepted
+  'answer_accepted' => 'Twoja odpowiedź została zaakceptowana i przyznano Tobie :points punktów.',
+
+  // answer_rejected
+  'answer_rejected' => 'Twoja odpowiedź na poniższe zadanie została odrzucona.',
 ];
