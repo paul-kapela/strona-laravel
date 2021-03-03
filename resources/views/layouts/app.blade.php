@@ -37,10 +37,6 @@
       @endcomponent
 
       <main class="py-4">
-        @if(session()->get('theme') == 'dark')
-          asdf
-        @endif
-
         @yield('content')
       </main>
     </div>
