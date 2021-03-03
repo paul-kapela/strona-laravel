@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Obliczamy.pl</title>
+    <title>{{ env('APP_NAME') }}</title>
 
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link rel="dns-prefetch" href="//stackpath.bootstrapcdn.com">
@@ -37,6 +37,10 @@
       @endcomponent
 
       <main class="py-4">
+        @if(session()->get('theme') == 'dark')
+          asdf
+        @endif
+
         @yield('content')
       </main>
     </div>
