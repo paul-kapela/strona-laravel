@@ -1,8 +1,8 @@
 <div>
   @if($images)
     @foreach($images as $image)
-      <a data-fancybox href="{{ asset('/storage/app/'.$image) }}">
-        <img style="width: 20% !important;" src="{{ asset('/storage/app/'.$image) }}"/>
+      <a data-fancybox href="{{ asset('/storage/'.$image) }}">
+        <img style="width: 20% !important;" src="{{ asset('/storage/'.$image) }}"/>
       </a>
     @endforeach
   @else
