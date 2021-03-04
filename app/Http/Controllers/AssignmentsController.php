@@ -209,9 +209,7 @@ class AssignmentsController extends Controller
 
             $imagePath = $data['image']->store('uploads/'.$assignment->image_directory, 'public');
 
-            Log::channel('stack')->info($imagePath);
-
-            $attachments[] = 'public/'.$imagePath;
+            $attachments[] = $imagePath;
 
             $assignment->attachments = serialize($attachments);
             $assignment->save();
