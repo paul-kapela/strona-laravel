@@ -200,11 +200,27 @@
           </section>
 
           <section id="whyworth" class="p-5">
-            <h1>Dlaczego warto?</h1>
+            <h1 class="pb-5">Dlaczego warto?</h1>
 
-            <ul>
-              <li>odpowiedzi od ekspertów</li>
-            </ul>
+            <div class="row text-center justify-content-center">
+              <div class="card col-md-3 mr-5 p-3">
+                <h3>Odpowiedzi od ekspertów</h3>
+
+                <hr>
+
+                <p>
+                  
+                </p>
+              </div>
+
+              <div class="card col-md-3 mr-5 p-3">
+                <h3>asdf</h3>
+              </div>
+
+              <div class="card col-md-3 p-3">
+                <h3>asdf</h3>
+              </div>
+            </div>
           </section>
       </main>
   </body>

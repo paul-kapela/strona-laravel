@@ -141,7 +141,7 @@ class AnswersController extends Controller
 
         $image_directory = Str::uuid();
         $attachments = save_images($data['image-upload-token'], $image_directory);
-        Storage::deleteDirectory('public/cache/'.$data['image-upload-token']);
+        Storage::deleteDirectory(storage_path('cache/'.$data['image-upload-token']));
 
         $answer = new Answer();
         $answer->accepted = $user->belongsToRoles('admin', 'editor');
@@ -201,7 +201,7 @@ class AnswersController extends Controller
 
         $assignment = $answer->assignment()->get()->first();
 
-        Storage::deleteDirectory('public/uploads/'.$answer->image_directory);
+        Storage::deleteDirectory(storage_path('uploads/'.$answer->image_directory));
 
         if ($answer->user->belongsToRoles('user'))
             Notification::send($answer->user, new AnswerRejected($answer));
@@ -230,7 +230,7 @@ class AnswersController extends Controller
 
             $imagePath = $data['image']->store('uploads/'.$answer->image_directory, 'public');
 
-            $attachments[] = 'public/'.$imagePath;
+            $attachments[] = $imagePath;
 
             $answer->attachments = serialize($attachments);
             $answer->save();
@@ -250,9 +250,10 @@ class AnswersController extends Controller
             'filename' => 'required'
         ]);
 
-        $path = 'public/uploads/'.$answer->image_directory.'/'.$data['filename'];
+        $path = 'uploads/'.$answer->image_directory.'/'.$data['filename'];
+        $pathToDelete = storage_path($path);
 
-        Storage::delete($path);
+        Storage::delete($pathToDelete);
 
         $attachments = unserialize($answer->attachments);
         $answer->attachments = serialize(array_diff($attachments, [$path]));

@@ -5,8 +5,8 @@ use Illuminate\Support\Facades\Storage;
 
 if (!function_exists('save_images')) {
     function save_images($imageUploadToken, $imageDirectory) {
-        $oldPath = 'public/cache/'.$imageUploadToken.'/';
-        $newPath = 'public/uploads/'.$imageDirectory.'/';
+        $oldPath = 'storage/cache/'.$imageUploadToken.'/';
+        $newPath = 'storage/uploads/'.$imageDirectory.'/';
 
         $attachments = [];
 

@@ -44,7 +44,7 @@ class ImageUploadController extends Controller
             'filename' => 'required'
         ]);
 
-        $path = 'public/cache/'.$data['token'].'/'.$data['filename'];
+        $path = storage_path('cache/'.$data['token'].'/'.$data['filename']);
 
         Storage::delete($path);
 

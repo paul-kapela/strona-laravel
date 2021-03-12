@@ -118,7 +118,7 @@ class AssignmentsController extends Controller
 
         $image_directory = Str::uuid();
         $attachments = save_images($data['image-upload-token'], $image_directory);
-        Storage::deleteDirectory('public/cache/'.$data['image-upload-token']);
+        Storage::deleteDirectory(storage_path('cache/'.$data['image-upload-token']));
 
         $assignment = new Assignment();
         $assignment->content_pl = (array_key_exists('content_pl', $data) && $data['content_pl'] != null) ? $data['content_pl'] : '';
@@ -183,7 +183,7 @@ class AssignmentsController extends Controller
     {
         $this->authorize('delete', $assignment);
 
-        Storage::deleteDirectory('public/uploads/'.$assignment->image_directory);
+        Storage::deleteDirectory(storage_path('uploads/'.$assignment->image_directory));
 
         $assignment->delete();
 
@@ -229,7 +229,7 @@ class AssignmentsController extends Controller
             'filename' => 'required'
         ]);
 
-        $path = 'public/uploads/'.$assignment->image_directory.'/'.$data['filename'];
+        $path = storage_path('uploads/'.$assignment->image_directory.'/'.$data['filename']);
 
         Storage::delete($path);
 
