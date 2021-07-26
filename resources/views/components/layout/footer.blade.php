@@ -11,6 +11,7 @@
         
         <a href="{{ route('welcome') }}">Strona główna</a>
         <a href="{{ route('terms') }}">Regulamin</a>
+        <a href="{{ route('help') }}">Pomoc</a>
       </div>
     
       <div class="px-4 d-flex flex-column">

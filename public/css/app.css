@@ -10977,3 +10977,11 @@ footer {
   font-weight: bold;
 }
 
+.nav-pills > li > a {
+  border-radius: 4px 4px 0 0;
+}
+
+.tab-content {
+  padding: 1em;
+}
+

@@ -1,9 +1,9 @@
 <div>
   <h6 class="text-secondary" style="font-size: 0.8em;">
     {{ __('content.user') }}: {{ $assignment->user->username }}<br/>
-    {{ __('content.subject') }}: {{ __('subject.'.$assignment->subject()->get()->first()->name) }}<br/>
-    {{ __('content.grade') }}: {{ __('grade.'.$assignment->grade()->get()->first()->name) }}<br/>
-    {{ __('content.date') }}: {{ $assignment->created_at }}
+    {{ __('subject.'.$assignment->subject()->get()->first()->name) }} &bull;
+    {{ __('grade.'.$assignment->grade()->get()->first()->name) }} &bull;
+    {{ $assignment->created_at }}
   </h6>
 
   @if($multilang ?? '')
@@ -58,8 +58,14 @@
 
   <hr>
 
-  @component('components/images', [
-    'images' => unserialize($assignment->attachments)
+  @component('components/attachments', [
+    'attachments' => unserialize($assignment->attachments)
   ])
   @endcomponent
+
+  @if($thumb ?? false)
+    <div class="d-flex flex-column-reverse">
+      <a href="{{ route('assignments.show', $assignment) }}" class="btn btn-primary align-self-end mt-3">{{ __('content.more') }}...</a>
+    </div>
+  @endif
 </div>

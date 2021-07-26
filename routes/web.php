@@ -20,6 +20,7 @@ Auth::routes(['verify' => true]);
 Route::get('home', 'HomeController@index')->name('home'); // done
 Route::get('/', 'HomeController@welcome')->name('welcome');
 Route::get('terms', 'HomeController@tos')->name('terms');
+Route::get('help', 'HomeController@help')->name('help');
 
 Route::get('notifications', 'NotificationsController@index')->name('notifications');
 
@@ -75,5 +76,5 @@ Route::delete('answers/{answer}/imageUpload', 'AnswersController@uploadDestroy')
 Route::get('answers/{answer}/accept', 'AnswersController@approve')->name('answers.approve');
 Route::post('answers/{answer}', 'AnswersController@accept')->name('answers.accept');
 
-Route::post('imageUpload', 'ImageUploadController@store')->name('imageUpload.store'); // done
-Route::delete('imageUpload', 'ImageUploadController@destroy')->name('imageUpload.destroy'); // done
+Route::post('imageUpload', 'AttachmentUploadController@store')->name('imageUpload.store'); // done
+Route::delete('imageUpload', 'AttachmentUploadController@destroy')->name('imageUpload.destroy'); // done

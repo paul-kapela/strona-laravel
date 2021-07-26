@@ -33,6 +33,10 @@ class Assignment extends Model
         return Str::words(strip_tags($this->content($language)), 50, '...');
     }
 
+    public static function recentUnsolved($number = 3) {
+        return Assignment::doesntHave('answers')->latest()->take($number)->get();
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

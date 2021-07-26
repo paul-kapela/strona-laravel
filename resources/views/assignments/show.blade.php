@@ -5,8 +5,8 @@
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">
-        <div class="card-header d-flex align-items-baseline">
-          <h5 class="mr-auto">{{ __('content.assignment') }}</h5>
+        <div class="card-header d-flex align-items-center">
+          <h5 class="mr-auto mb-0">{{ __('content.assignment') }}</h5>
 
           @can('delete', $assignment)
             <a href="{{ route('assignments.delete', $assignment) }}" class="mr-2">{{ __('actions.delete') }}</a>
@@ -68,7 +68,7 @@
           </div>
         @endforeach
       @else
-        <div class="text-center text-secondary">
+        <div class="text-center text-white">
           <p>{{ __('content.no_answers') }}</p>
         </div>
       @endif

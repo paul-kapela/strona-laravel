@@ -59,8 +59,8 @@
 
   <hr>
 
-  @component('components/images', [
-    'images' => unserialize($answer->attachments)
+  @component('components/attachments', [
+    'attachments' => unserialize($answer->attachments)
   ])
   @endcomponent
 @else

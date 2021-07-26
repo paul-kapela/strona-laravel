@@ -1943,7 +1943,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var token = document.querySelector('meta[name="csrf-token"]').content;
 var pl = {
-  "dictDefaultMessage": "Przeciągnij tutaj zdjęcia, które&nbsp;chcesz przesłać",
+  "dictDefaultMessage": "Przeciągnij tutaj pliki, które&nbsp;chcesz przesłać (jpeg, jpg, png, doc, docx, pdf)",
   "dictFallbackMessage": "Twoja przeglądarka nie obsługuje przesyłania plików za pomocą przeciągnięcia i&nbsp;upuszczenia.",
   "dictFallbackText": "Proszę użyć zastępczego pola poniżej.",
   "dictFileTooBig": "Plik jest za duży ({{filesize}}MiB). Maksymalny rozmiar pliku: {{maxFilesize}}MiB.",
@@ -1956,7 +1956,7 @@ var pl = {
   "dictMaxFilesExceeded": "Nie możesz przesłać więcej plików."
 };
 var en = {
-  "dictDefaultMessage": "Drop files here to upload",
+  "dictDefaultMessage": "Drop files here to upload (jpeg, jpg, png, doc, docx, pdf)",
   "dictFallbackMessage": "Your browser does not support drag'n'drop file uploads.",
   "dictFallbackText": "Please use the fallback form below to upload your files.",
   "dictFileTooBig": "File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.",
@@ -1978,14 +1978,14 @@ var en = {
       imageUploadToken: 0,
       dropzoneOptions: _objectSpread(_objectSpread({
         url: this.uploadUrl,
-        paramName: "image",
+        paramName: "attachment",
         headers: {
           "X-CSRF-TOKEN": token
         },
         addRemoveLinks: true,
         maxFilesize: 10,
         maxFiles: 5,
-        acceptedFiles: ".jpeg,.jpg,.png"
+        acceptedFiles: ".jpeg,.jpg,.png,.doc,.docx,.pdf"
       }, this.language === 'pl' ? pl : en), {}, {
         init: function init() {
           this.on("sending", function (file, xhr, formData) {
@@ -2032,7 +2032,7 @@ var en = {
         _this.$refs.dropzone.manuallyAddFile({
           "name": attachment.name,
           "size": attachment.size
-        }, "".concat(window.location.origin, "/storage/app/").concat(attachment.url));
+        }, "".concat(window.location.origin, "/storage/app/public/").concat(attachment.url));
       });
     }
   }
@@ -2103,10 +2103,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     checkExtensions: function checkExtensions() {
       for (var i = 0; i < this.files.length; i++) {
-        if (!/image/g.test(this.files[i].type) && this.files[i].type != 'image/tiff') {
+        if ((!/image/g.test(this.files[i].type) || this.files[i].type == 'application/msword' || this.files[i].type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || this.files[i].type == 'application/pdf') && this.files[i].type != 'image/tiff') {
           this.reset();
           this.error = true;
-          this.$refs.errorInfo.innerHTML = 'Załącznikami mogą być tylko zdjęcia. Zdjęcie nie może posiadać rozszerzenia TIFF.';
+          this.$refs.errorInfo.innerHTML = 'Załącznikami mogą być tylko zdjęcia i pliki Word oraz PDF. Zdjęcie nie może posiadać rozszerzenia TIFF.';
         }
       }
     },

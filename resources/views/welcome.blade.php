@@ -13,12 +13,16 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
 
     <script defer>
+        var previousScrollPosition = window.pageYOffset;
+
         window.addEventListener('scroll', function (event) {
             const brandElement = document.getElementById('brand');
             const topbarElement = document.getElementById('topbar');
 
             const initialClasses = ['navbar-dark', 'bg-transparent'];
             const classesAfterScrolling = ['navbar-light', 'bg-white', 'shadow'];
+
+            const currentScrollPosition = window.pageYOffset;
 
             if (window.scrollY > (window.innerHeight / 3)) {
                 // after scrolling title section
@@ -83,7 +87,6 @@
 
       #topbar {
         top: 0;
-        z-index: 1;
         
         transition: 0.3s;
       }
@@ -132,7 +135,7 @@
                       <a href="#howdoesitwork" class="nav-link">Jak to działa?</a>
                   </li>
                   <li class="nav-item active">
-                      <a href="" class="nav-link">Dlaczego warto?</a>
+                      <a href="#whyworth" class="nav-link">Dlaczego warto?</a>
                   </li>
                   @if (Route::has('login'))
                       @auth
@@ -202,8 +205,8 @@
           <section id="whyworth" class="p-5">
             <h1 class="pb-5">Dlaczego warto?</h1>
 
-            <div class="row text-center justify-content-center">
-              <div class="card col-md-3 mr-5 p-3">
+            <div class="row text-center justify-content-around">
+              <div class="card col-md-3 mb-sm-3 p-3">
                 <h3>Odpowiedzi od ekspertów</h3>
 
                 <hr>
@@ -213,7 +216,7 @@
                 </p>
               </div>
 
-              <div class="card col-md-3 mr-5 p-3">
+              <div class="card col-md-3 p-3">
                 <h3>asdf</h3>
               </div>
 
@@ -223,5 +226,8 @@
             </div>
           </section>
       </main>
+
+      @component('components.layout.footer')
+      @endcomponent
   </body>
 </html>

@@ -28,6 +28,7 @@ class AssignmentsController extends Controller
         $grade = request('grade');
         $query = request('query');
         $user = request('user');
+        $solved = request('solved');
 
         if ($subject && $grade)
         {
@@ -65,6 +66,32 @@ class AssignmentsController extends Controller
             else
             {
                 $assignments = \App\Assignment::where($column, 'LIKE', '%' . $query . '%');
+            }
+        }
+        
+        if ($solved == '0' || $solved == '1')
+        {
+            if ($subject || $grade || $user || $query)
+            {
+                if ($solved == '0')
+                {
+                    $assignments = $assignments->doesntHave('answers');
+                }
+                else if ($solved == '1')
+                {
+                    $assignments = $assignments->has('answers');
+                }
+            }
+            else
+            {
+                if ($solved == '0')
+                {
+                    $assignments = \App\Assignment::doesntHave('answers');
+                }
+                else if ($solved == '1')
+                {
+                    $assignments = \App\Assignment::has('answers');
+                }
             }
         }
 
@@ -118,7 +145,7 @@ class AssignmentsController extends Controller
 
         $image_directory = Str::uuid();
         $attachments = save_images($data['image-upload-token'], $image_directory);
-        Storage::deleteDirectory(storage_path('cache/'.$data['image-upload-token']));
+        Storage::disk('public')->deleteDirectory('cache/'.$data['image-upload-token']);
 
         $assignment = new Assignment();
         $assignment->content_pl = (array_key_exists('content_pl', $data) && $data['content_pl'] != null) ? $data['content_pl'] : '';
@@ -183,7 +210,7 @@ class AssignmentsController extends Controller
     {
         $this->authorize('delete', $assignment);
 
-        Storage::deleteDirectory(storage_path('uploads/'.$assignment->image_directory));
+        Storage::disk('public')->deleteDirectory('uploads/'.$assignment->image_directory);
 
         $assignment->delete();
 
@@ -194,26 +221,19 @@ class AssignmentsController extends Controller
     {
         $this->authorize('update', $assignment);
 
-        $validExtensions = array('jpeg', 'jpg', 'png', 'doc', 'docx', 'pdf');
-
         $data = request()->validate([
             'token' => 'required',
-            'image' => ['required', 'image']
+            'attachment' => ['required', 'file', 'mimes:jpeg,jpg,png,doc,docx,pdf']
         ]);
 
-        $extension = $data['image']->getClientOriginalExtension();
+        $attachments = unserialize($assignment->attachments);
 
-        if (in_array(strtolower($extension), $validExtensions))
-        {
-            $attachments = unserialize($assignment->attachments);
+        $imagePath = $data['attachment']->store('uploads/'.$assignment->image_directory, 'public');
 
-            $imagePath = $data['image']->store('uploads/'.$assignment->image_directory, 'public');
+        $attachments[] = $imagePath;
 
-            $attachments[] = $imagePath;
-
-            $assignment->attachments = serialize($attachments);
-            $assignment->save();
-        }
+        $assignment->attachments = serialize($attachments);
+        $assignment->save();
 
         return response()->json([
            'filename' => substr($imagePath, strrpos($imagePath, '/' ) + 1)
@@ -229,9 +249,9 @@ class AssignmentsController extends Controller
             'filename' => 'required'
         ]);
 
-        $path = storage_path('uploads/'.$assignment->image_directory.'/'.$data['filename']);
+        $path = 'uploads/'.$assignment->image_directory.'/'.$data['filename'];
 
-        Storage::delete($path);
+        Storage::disk('public')->delete($path);
 
         $attachments = unserialize($assignment->attachments);
         $assignment->attachments = serialize(array_diff($attachments, [$path]));

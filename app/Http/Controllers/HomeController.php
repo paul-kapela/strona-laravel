@@ -35,4 +35,9 @@ class HomeController extends Controller
     {
         return view('tos');
     }
+
+    public function help()
+    {
+        return view('help');
+    }
 }

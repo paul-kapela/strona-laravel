@@ -21,7 +21,7 @@
 
       @if($assignments->first())
         @foreach($assignments as $assignment)
-          @if(!empty($assignment->content()) || $user->belongsToRoles('admin', 'editor'))
+          @if(!empty($assignment->content()) || Auth::user()->belongsToRoles('admin', 'editor'))
             <div class="card mb-3">
               <div class="card-body">
                 @component('components.assignment', [
@@ -30,10 +30,6 @@
                   'thumb' => true
                 ])
                 @endcomponent
-
-                <div class="d-flex flex-column-reverse">
-                  <a href="{{ route('assignments.show', $assignment) }}" class="btn btn-primary align-self-end mt-3">{{ __('content.more') }}...</a>
-                </div>
               </div>
             </div>
           @endif

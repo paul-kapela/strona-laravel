@@ -23,7 +23,7 @@ import "vue2-dropzone/dist/vue2Dropzone.min.css";
 const token = document.querySelector('meta[name="csrf-token"]').content;
 
 const pl = {
-  "dictDefaultMessage": "Przeciągnij tutaj pliki, które&nbsp;chcesz przesłać",
+  "dictDefaultMessage": "Przeciągnij tutaj pliki, które&nbsp;chcesz przesłać (jpeg, jpg, png, doc, docx, pdf)",
   "dictFallbackMessage": "Twoja przeglądarka nie obsługuje przesyłania plików za pomocą przeciągnięcia i&nbsp;upuszczenia.",
   "dictFallbackText": "Proszę użyć zastępczego pola poniżej.",
   "dictFileTooBig": "Plik jest za duży ({{filesize}}MiB). Maksymalny rozmiar pliku: {{maxFilesize}}MiB.",
@@ -37,7 +37,7 @@ const pl = {
 };
 
 const en = {
-  "dictDefaultMessage": "Drop files here to upload",
+  "dictDefaultMessage": "Drop files here to upload (jpeg, jpg, png, doc, docx, pdf)",
   "dictFallbackMessage": "Your browser does not support drag'n'drop file uploads.",
   "dictFallbackText": "Please use the fallback form below to upload your files.",
   "dictFileTooBig": "File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.",
@@ -65,7 +65,7 @@ export default {
       imageUploadToken: 0,
       dropzoneOptions: {
         url: this.uploadUrl,
-        paramName: "image",
+        paramName: "attachment",
         headers: {
           "X-CSRF-TOKEN": token
         },
@@ -73,7 +73,7 @@ export default {
 
         maxFilesize: 10,
         maxFiles: 5,
-        acceptedFiles: ".jpeg,.jpg,.png,.doc,.pdf,.docx",
+        acceptedFiles: ".jpeg,.jpg,.png,.doc,.docx,.pdf",
 
         ...(this.language === 'pl' ? pl : en),
 
@@ -124,7 +124,11 @@ export default {
       let attachments = JSON.parse(this.attachments);
 
       attachments.forEach(attachment => {
-        this.$refs.dropzone.manuallyAddFile({ "name": attachment.name, "size": attachment.size }, `${window.location.origin}/storage/app/${attachment.url}`);
+        this.$refs.dropzone.manuallyAddFile({
+          "name": attachment.name,
+          "size": attachment.size
+          },
+          `${window.location.origin}/storage/app/public/${attachment.url}`);
       });
     }
   }

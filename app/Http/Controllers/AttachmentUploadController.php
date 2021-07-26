@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 
-class ImageUploadController extends Controller
+class AttachmentUploadController extends Controller
 {
     public function __construct()
     {
@@ -16,21 +16,14 @@ class ImageUploadController extends Controller
 
     public function store()
     {
-        $validExtensions = array('jpeg', 'jpg', 'png');
-
         $data = request()->validate([
             'token' => 'required',
-            'image' => ['required', 'image']
+            'attachment' => ['required', 'file', 'mimes:jpeg,jpg,png,doc,docx,pdf']
         ]);
 
         $token = request('token');
 
-        $extension = $data['image']->getClientOriginalExtension();
-
-        if (in_array(strtolower($extension), $validExtensions))
-        {
-            $imagePath = $data['image']->store('cache/'.$token, 'public');
-        }
+        $imagePath = $data['attachment']->store('cache/'.$token, 'public');
 
         return response()->json([
             'filename' => substr($imagePath, strrpos($imagePath, '/' ) + 1)
@@ -44,9 +37,9 @@ class ImageUploadController extends Controller
             'filename' => 'required'
         ]);
 
-        $path = storage_path('cache/'.$data['token'].'/'.$data['filename']);
+        $path = storage_path('app/public/cache/'.$data['token'].'/'.$data['filename']);
 
-        Storage::delete($path);
+        Storage::disk('public')->delete($path);
 
         return response()->json([
             'filename' => substr($path, strrpos($path   , '/' ) + 1)

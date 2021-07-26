@@ -141,7 +141,7 @@ class AnswersController extends Controller
 
         $image_directory = Str::uuid();
         $attachments = save_images($data['image-upload-token'], $image_directory);
-        Storage::deleteDirectory(storage_path('cache/'.$data['image-upload-token']));
+        Storage::disk('public')->deleteDirectory(storage_path('app/public/cache/'.$data['image-upload-token']));
 
         $answer = new Answer();
         $answer->accepted = $user->belongsToRoles('admin', 'editor');
@@ -201,7 +201,7 @@ class AnswersController extends Controller
 
         $assignment = $answer->assignment()->get()->first();
 
-        Storage::deleteDirectory(storage_path('uploads/'.$answer->image_directory));
+        Storage::disk('public')->deleteDirectory('uploads/'.$answer->image_directory);
 
         if ($answer->user->belongsToRoles('user'))
             Notification::send($answer->user, new AnswerRejected($answer));
@@ -215,26 +215,19 @@ class AnswersController extends Controller
     {
         $this->authorize('update', $answer);
 
-        $validExtensions = array('jpeg', 'jpg', 'png', 'doc', 'docx', 'pdf');
-
         $data = request()->validate([
             'token' => 'required',
-            'image' => ['required', 'image']
+            'attachment' => ['required', 'file', 'mimes:jpeg,jpg,png,doc,docx,pdf']
         ]);
 
-        $extension = $data['image']->getClientOriginalExtension();
+        $attachments = unserialize($answer->attachments);
 
-        if (in_array(strtolower($extension), $validExtensions))
-        {
-            $attachments = unserialize($answer->attachments);
+        $imagePath = $data['attachment']->store('uploads/'.$answer->image_directory, 'public');
 
-            $imagePath = $data['image']->store('uploads/'.$answer->image_directory, 'public');
+        $attachments[] = $imagePath;
 
-            $attachments[] = $imagePath;
-
-            $answer->attachments = serialize($attachments);
-            $answer->save();
-        }
+        $answer->attachments = serialize($attachments);
+        $answer->save();
 
         return response()->json([
            'filename' => substr($imagePath, strrpos($imagePath, '/' ) + 1)
@@ -251,9 +244,8 @@ class AnswersController extends Controller
         ]);
 
         $path = 'uploads/'.$answer->image_directory.'/'.$data['filename'];
-        $pathToDelete = storage_path($path);
 
-        Storage::delete($pathToDelete);
+        Storage::disk('public')->delete($path);
 
         $attachments = unserialize($answer->attachments);
         $answer->attachments = serialize(array_diff($attachments, [$path]));

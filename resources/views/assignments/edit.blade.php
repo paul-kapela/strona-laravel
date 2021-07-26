@@ -71,8 +71,8 @@
                             @endcomponent
                         </form>
 
-{{--                        @component('components/images', [--}}
-{{--                            'images' => unserialize($assignment->attachments)--}}
+{{--                        @component('components/attachments', [--}}
+{{--                            'attachments' => unserialize($assignment->attachments)--}}
 {{--                        ])--}}
 {{--                        @endcomponent--}}
 

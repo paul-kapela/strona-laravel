@@ -5,7 +5,7 @@
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">
-        <div class="card-header d-flex align-items-baseline">
+        <div class="card-header d-flex align-items-center">
           <span class="mr-auto">{{ __('profile.edit').' '.lcfirst(__('profile.profile')) }}</span>
 
           @component('components.close-button', [
