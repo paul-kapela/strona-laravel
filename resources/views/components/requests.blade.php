@@ -1,13 +1,9 @@
 @if($requests->first())
   @if(request('assignment') != null)
-    <div class="card card-body">
-      @component('components.assignment', [
-        'assignment' => \App\Assignment::findOrFail(request('assignment'))
-      ])
-      @endcomponent
-    </div>
-
-    <hr class="bg-white">
+    @component('components.assignment', [
+      'assignment' => \App\Assignment::findOrFail(request('assignment'))
+    ])
+    @endcomponent
   @endif
 
   @foreach($requests as $request)
@@ -18,7 +14,7 @@
       ])          
       @endcomponent
 
-      <div class="text-white text-right">
+      <div class="text-right">
         @if(policy(\App\RequestResponse::class)->create(Auth::user()))
           @switch($request->status())
             @case('pending')
@@ -80,7 +76,5 @@
     </div>
   @endforeach
 @else
-  <div class="mt-5 text-white text-center justify-content-center">
-    <h3>{{ __('request.no').' '.__('request.requests') }}</h3>
-  </div>
+  <h1 class="text-center text-2xl font-light">{{ __('request.no').' '.__('request.requests') }}</h1>
 @endif

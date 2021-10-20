@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css?family=Walter+Turncoat');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.chalk {
+  font-family: 'Walter Turncoat', cursive;
+  font-weight: bold;
+}
+
+.rounded-border {
+  border-width: 2px;
+  @apply dark:border-opacity-10 rounded-xl;
+}
+
+.input {
+  @apply h-10 pl-4 pr-3 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-l-full outline-none border-t-2 border-r-0 border-b-2 border-l-2 border-transparent;
+}
+
+.without-button {
+  @apply border-2 border-transparent rounded-r-full;
+}
+
+.input-button, .search-button {
+  @apply text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-r-full border-t-2 border-r-2 border-b-2 border-l-0 border-transparent;
+}
+
+.input-button > svg {
+  @apply h-9 w-9 p-1;
+}
+
+.input:focus {
+  @apply border-gray-700 dark:border-gray-300 border-t-2 border-r-0 border-b-2 border-l-2;
+}
+
+.without-button:focus {
+  @apply border-gray-700 dark:border-gray-300 border-2;
+}
+
+.input:focus ~ .input-button, .input:focus ~ .search-button {
+  @apply border-gray-700 dark:border-gray-300 border-t-2 border-r-2 border-b-2 border-l-0;
+}
+
+.input.error {
+  @apply border-red-500;
+}
+
+.input.error ~ .input-button {
+  @apply border-red-500;
+}
+
+.picker input[type="radio"]:checked+label {
+  font-weight: bold;
+}
+
+input[type="checkbox"]:checked + div svg {
+  display: none;
+}
+
+input[type="checkbox"]:not(:checked) + label > .checked-icon {
+  display: none;
+}
+
+input[type="checkbox"]:not(:checked) + label > .unchecked-icon {
+  visibility: visible;
+}
+
+input[type="checkbox"]:checked + label > .checked-icon {
+  visibility: visible;
+}
+
+input[type="checkbox"]:checked + label > .unchecked-icon {
+  display: none;
+}

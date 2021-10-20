@@ -14,7 +14,7 @@ class NotificationsController extends Controller
 
     public function index()
     {
-        $notifications = Auth::user()->notifications;
+        $notifications = Auth::user()->notifications()->paginate(20);
 
         return view('notifications.index', compact('notifications'));
     }

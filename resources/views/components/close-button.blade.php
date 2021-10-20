@@ -1,3 +1,3 @@
-<a class="btn bg-transparent" style="padding: 0 !important; font-size: 1.3em;" href="{{ $url ?? '#' }}" onclick="{{ $back ?? '' ? 'window.history.back()' : 'null' }}">
-    <span class="{{ $white ?? '' ? 'text-white' : '' }} icon-remove"></span>
+<a href="{{ $url ?? '#' }}" onclick="{{ $back ?? '' ? 'window.history.back()' : 'null' }}">
+    <h4 class="text-xl font-light">Wróć</h4>
 </a>

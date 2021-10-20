@@ -1,18 +1,14 @@
-<div>
-  <span class="text-secondary">
-    <h6>{{ __('content.user') }}: {{ $request->user->username }}</h6>
-    <h6>{{ __('content.date') }}: {{ $request->created_at }}</h6>
-  </span>
-
-  <hr>
+<div class="mb-5 p-5 border-2 dark:border-opacity-10 rounded-xl">
+  <h6 class="mb-5 text-sm font-semibold">
+    {{ $request->user->username }} &bull;
+    {{ $request->created_at }}
+  </h6>
 
   @if($display_assignment ?? true)
     @component('components.assignment', [
       'assignment' => $request->assignment
     ])  
     @endcomponent
-
-    <hr>
   @endif
 
   <p class="mb-0">{{ __('request.due_date') }}: {{ $request->due_date }}</p>

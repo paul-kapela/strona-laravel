@@ -3,8 +3,11 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 
-class SetTheme
+use App\User;
+
+class UserHasRole
 {
     /**
      * Handle an incoming request.
@@ -13,10 +16,10 @@ class SetTheme
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next, $role)
     {
-        if (request('change_theme')) {
-            session()->put('theme', request('change_theme'));
+        if (!$request->user()->belongsToRoles($role)) {
+            return redirect(route('home'));
         }
 
         return $next($request);

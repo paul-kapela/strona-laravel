@@ -13,7 +13,7 @@ return [
     */
 
     'login' => 'Zaloguj się',
-    'username_or_email' => 'Nazwa użytkownika lub&nbsp;adres e-mail',
+    'username_or_email' => 'Nazwa użytkownika lub&nbsp;adres e‑mail',
     'password' => 'Hasło',
     'remember_me' => 'Zapamiętaj mnie',
     'reset_password' => 'Przywróć hasło',

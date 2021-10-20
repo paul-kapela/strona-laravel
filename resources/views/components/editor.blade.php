@@ -1,8 +1,10 @@
-<div>
-  <div class="form-group">
-    <label class="col-form-label text-md-right">{{ __('content.content') }}</label>
+<div class="mt-5">
+  <div>
+    <h3 class="text-xl font-semibold">{{ __('content.content') }}</h3>
 
-    <rich-text-input
+    <hr class="my-3 dark:opacity-10 border-t-2">
+
+  <rich-text-input
       initial-content-pl="{{ isset($entry) ? $entry->content_pl : '' }}"
       initial-content-en="{{ isset($entry) ? $entry->content_en : '' }}"
       language="{{ App::getLocale() }}"
@@ -12,8 +14,8 @@
   </div>
 
   @if($dropzone ?? true)
-    <div class="form-group">
-      <label class="col-form-label text-md-right">{{ __('content.attachments') }}</label>
+    <div>
+      <h3 class="mt-5 mb-2 text-xl font-semibold">{{ __('content.attachments') }}</h3>
 
       <alternative-file-input
         upload-url="{{ isset($entry) ? route($model == 'assignment' ? "assignments.imageUploadStore" : "answers.imageUploadStore", $entry->id) : route("imageUpload.store") }}"
@@ -24,9 +26,5 @@
     </div>
   @endif
 
-  <div class="form-group row mb-0">
-    <div class="col-md-6">
-      <submit-button language="{{ App::getLocale() }}" editing="{{ isset($entry) }}"/>
-    </div>
-  </div>
+  <submit-button language="{{ App::getLocale() }}" editing="{{ isset($entry) }}"/>
 </div>

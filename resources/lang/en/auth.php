@@ -14,7 +14,7 @@ return [
     */
 
     'login' => 'Log in',
-    'username_or_email' => 'Username or&nbsp;email',
+    'username_or_email' => 'Username or&nbsp;e‑mail',
     'password' => 'Password',
     'remember_me' => 'Remember me',
     'reset_password' => 'Reset password',

@@ -4,6 +4,8 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import Vue from 'vue';
+
 require('./bootstrap');
 require('katex');
 require('./mathquill4quill');
@@ -21,6 +23,8 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
+Vue.component('theme-switch', require('./components/ThemeSwitch.vue').default);
+Vue.component('option-picker', require('./components/OptionPicker.vue').default);
 Vue.component('file-input', require('./components/FileInput.vue').default);
 Vue.component('alternative-file-input', require('./components/AlternativeFileInput.vue').default);
 Vue.component('rich-text-input', require('./components/RichTextInput.vue').default);

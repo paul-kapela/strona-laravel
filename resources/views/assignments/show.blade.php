@@ -1,78 +1,66 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card">
-        <div class="card-header d-flex align-items-center">
-          <h5 class="mr-auto mb-0">{{ __('content.assignment') }}</h5>
+<div class="col-span-12">
+  {{-- <div class="absolute z-1 mx-auto">
+    Hello
+  </div> --}}
 
-          @can('delete', $assignment)
-            <a href="{{ route('assignments.delete', $assignment) }}" class="mr-2">{{ __('actions.delete') }}</a>
-          @endcan
+  <div class="flex mb-5 items-center">
+    <h1 class="mr-auto text-2xl font-semibold">{{ __('content.assignment') }}</h1>
 
-          @can('update', $assignment)
-            <a href="{{ route('assignments.edit', $assignment) }}">{{ __('actions.edit') }}</a>
-          @endcan
+    @can('delete', $assignment)
+      <a href="{{ route('assignments.delete', $assignment) }}" class="mr-2 text-xl font-light">{{ __('actions.delete') }}</a>
+    @endcan
 
-          <div class="ml-2">
-            @component('components.close-button', [
-              'url' => route('assignments.index')
-            ])
-            @endcomponent
-          </div>
-        </div>
+    @can('update', $assignment)
+      <a href="{{ route('assignments.edit', $assignment) }}" class="text-xl font-light">{{ __('actions.edit') }}</a>
+    @endcan
 
+    <div class="ml-2">
+      @component('components.close-button', [
+        'url' => route('assignments.index')
+      ])
+      @endcomponent
+    </div>
+  </div>
+
+  @component('components.assignment', [
+    'assignment' => $assignment,
+    'multilang' => Auth::user()->belongsToRoles('editor', 'admin')
+  ])
+  @endcomponent
+
+  <div class="flex mb-5 items-center">
+    <h1 class="mr-auto text-2xl font-semibold">{{ __('content.answers') }}</h1>
+
+    @if(policy(\App\Answer::class)->create(Auth::user()))
+      <a href="{{ route('answers.create', $assignment) }}" class="mr-2 text-xl font-light">{{ __('create.send').' '.__('create.answer') }}</a>
+    @endif
+
+    @if(policy(\App\Request::class)->create(Auth::user(), $assignment))
+      <a href="{{ route('requests.create', ['assignment' => $assignment->id]) }}" class="mr-2 text-xl font-light">{{ __('request.add').' '.__('request.request') }}</a>
+    @endif
+
+    @if(policy(\App\Request::class)->viewAny(Auth::user()))
+      <a href="{{ route('requests.index', ['assignment' => $assignment->id]) }}" class="text-xl font-light">{{ __('request.show_all').' '.lcfirst(__('request.title')) }}</a>
+    @endif
+  </div>
+
+  @if($assignment->answers()->exists())
+    @foreach($assignment->answers()->get() as $answer)
+      <div class="card mt-3">
         <div class="card-body">
-          @component('components.assignment', [
-            'assignment' => $assignment,
+          @component('components.answer', [
+            'answer' => $answer,
             'multilang' => Auth::user()->belongsToRoles('editor', 'admin')
           ])
           @endcomponent
         </div>
       </div>
-
-      <hr>
-
-      <div class="d-flex align-items-baseline text-white">
-        <h5>{{ __('content.answers') }}</h5>
-
-        <div class="ml-auto mr-0">
-          @if(policy(\App\Answer::class)->create(Auth::user()))
-            <a href="{{ route('answers.create', $assignment) }}" class="mr-2 text-white">{{ __('create.send').' '.__('create.answer') }}</a>
-          @endif
-  
-          @if(policy(\App\Request::class)->create(Auth::user(), $assignment))
-            <a href="{{ route('requests.create', ['assignment' => $assignment->id]) }}" class="mr-2 text-white">{{ __('request.add').' '.__('request.request') }}</a>
-          @endif
-
-          @if(policy(\App\Request::class)->viewAny(Auth::user()))
-            <a href="{{ route('requests.index', ['assignment' => $assignment->id]) }}" class="text-white">{{ __('request.show_all').' '.lcfirst(__('request.title')) }}</a>
-          @endif
-        </div>
-      </div>
-
-      <hr>
-
-      @if($assignment->answers()->exists())
-        @foreach($assignment->answers()->get() as $answer)
-          <div class="card mt-3">
-            <div class="card-body">
-              @component('components.answer', [
-                'answer' => $answer,
-                'multilang' => Auth::user()->belongsToRoles('editor', 'admin')
-              ])
-              @endcomponent
-            </div>
-          </div>
-        @endforeach
-      @else
-        <div class="text-center text-white">
-          <p>{{ __('content.no_answers') }}</p>
-        </div>
-      @endif
-    </div>
-  </div>
+    @endforeach
+  @else
+    <h1 class="text-center text-2xl font-light">{{ __('content.no_answers') }}</h1>
+  @endif
 </div>
 @endsection

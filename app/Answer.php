@@ -4,10 +4,19 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Storage;
 
 class Answer extends Model
 {
     protected $guarded = [];
+
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function ($answer) {
+            Storage::disk('public')->deleteDirectory('uploads/'.$answer->image_directory);
+        });
+    }
 
     public function content()
     {

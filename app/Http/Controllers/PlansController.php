@@ -5,9 +5,14 @@ namespace App\Http\Controllers;
 use App\Plan;
 use Illuminate\Http\Request;
 
-class PlanController extends Controller
+class PlansController extends Controller
 {
-    
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('verified');
+        $this->middleware('role:user');
+    }    
 
     /**
      * Display a listing of the resource.
@@ -55,7 +60,7 @@ class PlanController extends Controller
      */
     public function show(Plan $plan)
     {
-        //
+        
     }
 
     /**

@@ -201,8 +201,6 @@ class AnswersController extends Controller
 
         $assignment = $answer->assignment()->get()->first();
 
-        Storage::disk('public')->deleteDirectory('uploads/'.$answer->image_directory);
-
         if ($answer->user->belongsToRoles('user'))
             Notification::send($answer->user, new AnswerRejected($answer));
 

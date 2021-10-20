@@ -34,7 +34,8 @@ Route::post('password/change', 'ChangePasswordController@new')->name('password.n
 
 Route::get('email/change', 'EmailChangeController@verify')->name('email.change'); // done
 
-Route::get('plans', 'PlanController@index')->name('plans.index');
+Route::get('plans', 'PlansController@index')->name('plans.index');
+Route::get('plans/{plan}', 'PlansController@show')->name('plans.show');
 
 Route::get('assignments', 'AssignmentsController@index')->name('assignments.index'); // done
 Route::post('assignments', 'AssignmentsController@store')->name('assignments.store'); // done

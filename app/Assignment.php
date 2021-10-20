@@ -4,11 +4,22 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Assignment extends Model
 {
     protected $guarded = [];
+
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function ($assignment) {
+            Storage::disk('public')->deleteDirectory('uploads/'.$assignment->image_directory);
+
+            $assignment->answers()->delete();
+        });
+    }
 
     public function content($language = NULL)
     {

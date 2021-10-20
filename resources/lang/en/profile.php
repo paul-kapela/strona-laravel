@@ -15,4 +15,8 @@ return [
     'hidden' => 'Hidden',
     'view' => 'View',
     'save' => 'Save',
+
+    'user' => 'User',
+    'editor' => 'Editor',
+    'admin' => 'Admin',
 ];

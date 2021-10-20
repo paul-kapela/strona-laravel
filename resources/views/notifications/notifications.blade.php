@@ -7,7 +7,5 @@
     @endcomponent
   @endforeach
 @else
-  <div class="{{ $tab ?? '' ? 'mt-2 mb-3 text-dark' : 'mt-5 text-white' }} text-center justify-content-center">
-    <h3>{{ __('notification.no').' '.__('notification.notifications') }}</h3>
-  </div>
+  <p class="p-3 pb-5 text-center">{{ __('notification.no').' '.__('notification.notifications') }}</p>
 @endif

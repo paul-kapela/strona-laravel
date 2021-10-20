@@ -1,57 +1,37 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-2">
-      @component('components.subject-select')
-      @endcomponent
-    </div>
+<div class="lg:col-span-2 lg:mb-0 mb-5">
+  @component('components.subject-select')
+  @endcomponent
 
-    <div class="col-md-8">
-      @component('components.search-bar', [
-        'route_name' => 'assignments.index'
-      ])
-      @endcomponent
+  <div class="mt-5">
+    @component('components.grade-select')
+    @endcomponent
+  </div>
+</div>
 
-      @component('components.grade-select')
-      @endcomponent
+<div class="lg:col-span-8 lg:mx-10">
+  {{-- TODO: show if localization available --}}
 
-      {{-- TODO: show if localization available --}}
-
-      @if($assignments->first())
-        @foreach($assignments as $assignment)
-          @if(!empty($assignment->content()) || Auth::user()->belongsToRoles('admin', 'editor'))
-            <div class="card mb-3">
-              <div class="card-body">
-                @component('components.assignment', [
-                  'assignment' => $assignment,
-                  'multilang' => Auth::user()->belongsToRoles('editor', 'admin'),
-                  'thumb' => true
-                ])
-                @endcomponent
-              </div>
-            </div>
-          @endif
-        @endforeach
-      @else
-        <div class="mt-5 text-white text-center justify-content-center">
-          <h3>{{ __('search.empty_result') }}</h3>
-          <p>{{ __('search.try_again') }}</p>
-          <a href="{{ route('assignments.create') }}">
-            <u class="text-white font-weight-bold">{{ __('create.send').' '.__('create.assignment') }}</u>
-          </a>
-        </div>
+  @if($assignments->first())
+    @foreach($assignments as $assignment)
+      @if(!empty($assignment->content()) || Auth::user()->belongsToRoles('admin', 'editor'))
+        @component('components.assignment', [
+          'assignment' => $assignment,
+          'multilang' => Auth::user()->belongsToRoles('editor', 'admin'),
+          'thumb' => true
+        ])
+        @endcomponent
       @endif
+    @endforeach
+  @else
+    <div class="mt-36 text-center">
+      <h3 class="text-2xl font-semibold">{{ __('search.empty_result') }}</h3>
+      <p>{{ __('search.try_again') }}</p>
     </div>
+  @endif
 
-    <div class="col-md-2">
-
-    </div>
-  </div>
-
-  <div class="row justify-content-center">
-      {{ $assignments->appends(request()->all())->links() }}
-  </div>
+  {{ $assignments->appends(request()->all())->links() }}
 </div>
 @endsection

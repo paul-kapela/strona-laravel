@@ -210,8 +210,6 @@ class AssignmentsController extends Controller
     {
         $this->authorize('delete', $assignment);
 
-        Storage::disk('public')->deleteDirectory('uploads/'.$assignment->image_directory);
-
         $assignment->delete();
 
         return redirect(route('assignments.index'));

@@ -4,7 +4,7 @@ return [
     'send' => 'Prześlij',
     'edit' => 'Edytuj',
     'save' => 'Zapisz',
-    'an' => '',
+    'an' => ' ',
     'assignment' => 'zadanie',
     'answer' => 'odpowiedź',
 ];

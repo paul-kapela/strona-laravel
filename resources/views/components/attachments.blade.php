@@ -18,6 +18,6 @@
       </ul>
     @endforeach
   @else
-    <p class="text-center text-secondary">{{ __('content.no_attachments') }}</p>
+    <p class="text-center text-2xl font-light">{{ __('content.no_attachments') }}</p>
   @endif
 </div>

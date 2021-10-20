@@ -44,7 +44,7 @@ class UsersController extends Controller
 
         $data = request()->validate([
             'username' => ['string', 'max:30'],
-            'email' => ['required', 'string', 'max:50'],
+            'email' => ['required', 'email:rfc,dns', 'string', 'max:50'],
             'phone' => ['nullable', 'string', 'regex:/[0-9]{3} [0-9]{3} [0-9]{3}/'],
             'skype' => ['nullable', 'string', 'max:32'],
             'email_show' => ['nullable', 'boolean'],

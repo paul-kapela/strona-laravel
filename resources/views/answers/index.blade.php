@@ -21,11 +21,6 @@
     </div>
 
     <div class="col-md-8">
-      @component('components.search-bar', [
-        'route_name' => 'answers.index'
-      ])
-      @endcomponent
-
       @component('components.grade-select')
       @endcomponent
 

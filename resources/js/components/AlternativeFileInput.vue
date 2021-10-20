@@ -128,13 +128,9 @@ export default {
           "name": attachment.name,
           "size": attachment.size
           },
-          `${window.location.origin}/storage/app/public/${attachment.url}`);
+          `${window.location.origin}/storage/${attachment.url}`);
       });
     }
   }
 }
 </script>
-
-<style>
-
-</style>

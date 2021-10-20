@@ -4,7 +4,7 @@ return [
     'send' => 'Send',
     'edit' => 'Edit',
     'save' => 'Save',
-    'an' => 'an ',
+    'an' => ' an ',
     'assignment' => 'assignment',
     'answer' => 'answer',
     'images' => 'Images',

@@ -1,139 +1,158 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card">
-        <div class="card-header">{{ __('auth.signup') }}</div>
+<div class="lg:col-span-4"></div>
 
-        <div class="card-body">
-          <form method="POST" action="{{ route('register') }}">
-            @csrf
+<div class="lg:col-span-4 col-span-12 p-5 rounded-border">
+  <h1 class="mb-5 text-2xl font-semibold">{{ __('auth.signup') }}</h1>
 
-            <!-- Name -->
-            <!-- <div class="form-group row">
-              <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Imię') }}</label>
+  <form method="POST" action="{{ route('register') }}">
+    @csrf
 
-              <div class="col-md-6">
-                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+    @if ($errors->any())
+      <div class="p-5 bg-red-400 rounded-xl">
+        <ul>
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </div>
+    @endif
 
-                @error('name')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
-              </div>
-            </div> -->
+    <!-- Name -->
+    <!-- <div class="form-group row">
+      <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Imię') }}</label>
 
-            <!-- Surname -->
-            <!-- <div class="form-group row">
-              <label for="surname" class="col-md-4 col-form-label text-md-right">{{ __('Nazwisko') }}</label>
+      <div class="col-md-6">
+        <input id="name" type="text" class="form-control @error('name') error @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
-              <div class="col-md-6">
-                <input id="surname" type="text" class="form-control @error('surname') is-invalid @enderror" name="surname" value="{{ old('surname') }}" required autocomplete="surname">
+        @error('name')
+          <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+          </span>
+        @enderror
+      </div>
+    </div> -->
 
-                @error('surname')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
-              </div>
-            </div> -->
+    <!-- Surname -->
+    <!-- <div class="form-group row">
+      <label for="surname" class="col-md-4 col-form-label text-md-right">{{ __('Nazwisko') }}</label>
 
-            <!-- Username -->
-            <div class="form-group row">
-              <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('auth.username') }}</label>
+      <div class="col-md-6">
+        <input id="surname" type="text" class="form-control @error('surname') error @enderror" name="surname" value="{{ old('surname') }}" required autocomplete="surname">
 
-              <div class="col-md-6">
-                <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autofocus>
+        @error('surname')
+          <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+          </span>
+        @enderror
+      </div>
+    </div> -->
 
-                @error('username')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
-              </div>
-            </div>
-
-            <!-- E-mail -->
-            <div class="form-group row">
-              <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('auth.email') }}</label>
-
-              <div class="col-md-6">
-                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                @error('email')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
-              </div>
-            </div>
-
-            <!-- Password -->
-            <div class="form-group row">
-              <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('auth.password') }}</label>
-
-              <div class="col-md-6">
-                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                @error('password')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
-              </div>
-            </div>
-
-            <!-- Password confirmation -->
-            <div class="form-group row">
-              <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('auth.repeat_password') }}</label>
-
-              <div class="col-md-6">
-                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-              </div>
-            </div>
-
-            <!-- Captcha -->
-            <div class="form-group row">
-              <label for="captcha" class="col-md-4 col-form-label text-md-right">{{ __('auth.confirm_identity') }}</label>
-
-              <div class="col-md-6">
-                <input
-                  id="captcha"
-                  type="text"
-                  name="captcha"
-                  class="mb-3 w-100 form-control @error('captcha') is-invalid @enderror"
-                >
+    <!-- Username -->
+    <div class="flex flex-col space-y-5">
+      <div>
+        <label for="username" class="mb-2 inline-block font-semibold">{{ __('auth.username') }}</label>
   
-                <div class="w-100 d-flex align-items-center alert alert-primary">
-                  <p class="mr-3">{{ __('auth.captcha') }}: </p>
+        <input
+          id="username"
+          type="text"
+          class="input without-button w-full @error('username') error @enderror"
+          name="username"
+          value="{{ old('username') }}"
+          required
+          autofocus
+        >
+      </div>
+  
+      <!-- E-mail -->
+      <div>
+        <label for="email" class="mb-2 inline-block font-semibold">{{ __('auth.email') }}</label>
+  
+        <input
+          id="email"
+          type="email"
+          class="input without-button w-full @error('email') error @enderror"
+          name="email"
+          value="{{ old('email') }}"
+          required
+          autocomplete="email"
+        >
+      </div>
+  
+      <!-- Password -->
+      <div>
+        <label for="password" class="mb-2 inline-block font-semibold">{{ __('auth.password') }}</label>
+  
+        <input
+          id="password"
+          type="password"
+          class="input without-button w-full @error('password') error @enderror"
+          name="password"
+          required
+          autocomplete="new-password">
+      </div>
+  
+      <!-- Password confirmation -->
+      <div>
+        <label for="password-confirm" class="mb-2 inline-block font-semibold">{{ __('auth.repeat_password') }}</label>
+  
+        <input
+          id="password-confirm"
+          type="password"
+          class="input without-button w-full"
+          name="password_confirmation"
+          required
+          autocomplete="new-password"
+        >
+      </div>
+  
+      <!-- Captcha -->
+      <div class="flex flex-row">
+        <div class="w-60">
+          <label for="captcha" class="mb-2 inline-block font-semibold">{{ __('auth.confirm_identity') }}</label>
+    
+          <input
+            id="captcha"
+            type="text"
+            name="captcha"
+            class="input without-button w-full @error('captcha') error @enderror"
+          >
+        </div>
 
-                  {!! Captcha::img('flat') !!}
-                </div>
-              </div>
-            </div>
+        <div>
+          <h6 class="mb-2 inline-block font-semibold">{{ __('auth.captcha') }}</h6>
 
-            <!-- Register - submit button -->
-            <div class="form-group row mb-0">
-              <div class="col-md-6 offset-md-4">
-                <!-- Accept terms and conditions -->
-
-                <div class="form-check mb-3">
-                  <input type="checkbox" class="form-check-input" id="tos-check" name="tos-check" required>
-                  <label for="tos-check" class="form-check-label">{{ __('tos.know_and_accept').lcfirst(__('tos.tos')).'.' }}</label>
-                </div>
-
-                <button type="submit" class="btn btn-primary">
-                  {{ __('auth.signup') }}
-                </button>
-              </div>
-            </div>
-          </form>
+          <div class="rounded-full">{!! Captcha::img('flat') !!}</div>
         </div>
       </div>
+  
+      <!-- Accept terms and conditions -->
+      <div class="flex items-center w-full">
+        <input type="checkbox" class="opacity-0 absolute h-4 w-4" id="tos-check" name="tos-check" required>
+        
+        <div class="border-2 rounded-md border-gray-800 dark:border-gray-200 w-4 h-4 flex flex-shrink-0 justify-center items-center mr-2">
+          <svg class="text-gray-800 dark:text-gray-200 hidden w-2 h-2 pointer-events-none" version="1.1" viewBox="0 0 17 12" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" fill-rule="evenodd">
+              <g transform="translate(-9 -11)" fill="currentColor" fill-rule="nonzero">
+                <path d="m25.576 11.414c0.56558 0.55188 0.56558 1.4439 0 1.9961l-9.404 9.176c-0.28213 0.27529-0.65247 0.41385-1.0228 0.41385-0.37034 0-0.74068-0.13855-1.0228-0.41385l-4.7019-4.588c-0.56584-0.55188-0.56584-1.4442 0-1.9961 0.56558-0.55214 1.4798-0.55214 2.0456 0l3.679 3.5899 8.3812-8.1779c0.56558-0.55214 1.4798-0.55214 2.0456 0z" />
+              </g>
+            </g>
+          </svg>
+        </div>
+        
+        <label for="tos-check" class="select-none">{{ __('tos.know_and_accept').lcfirst(__('tos.tos')).'.' }}</label>
+      </div>
+      
+      <!-- Register - submit button -->
+      <div class="w-full flex justify-end space-x-2">
+        <button type="submit" class="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 font-semibold rounded-full">
+          {{ __('auth.signup') }}
+        </button>
+      </div>
     </div>
-  </div>
+  </form>
 </div>
+
+<div class="lg:col-span-4"></div>
 @endsection

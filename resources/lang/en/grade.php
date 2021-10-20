@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'grades' => 'Grades',
     'highschool' => 'High school',
-    'college' => 'College'
+    'college' => 'College',
+    'grades' => 'Grades',
 ];

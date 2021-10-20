@@ -15,4 +15,8 @@ return [
     'hidden' => 'Ukryte',
     'view' => 'Pokaż',
     'save' => 'Zapisz',
+
+    'user' => 'Użytkownik',
+    'editor' => 'Edytor',
+    'admin' => 'Administrator',
 ];

@@ -5,62 +5,51 @@
 @endsection
 
 @section('content')
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card">
-        <div class="card-header d-flex align-items-baseline">
-          <span class="mr-auto">{{ __('create.send').' '.__('create.an').__('create.assignment') }}</span>
+<div class="col-span-12">
+  <div class="flex mb-5">
+    <h1 class="mr-auto text-2xl font-semibold">{{ __('create.send').' '.__('create.an').__('create.assignment') }}</h1>
+  
+    @component('components.close-button', [
+      'back' => true
+    ])
+    @endcomponent
+  </div>
 
-          @component('components.close-button', [
-            'back' => true
-          ])
-          @endcomponent
-        </div>
+  @if ($errors->any())
+    <div class="col-span-12 p-5 bg-red-400 rounded-xl">
+      <ul>
+        @foreach ($errors->all() as $error)
+          <li>{{ $error }}</li>
+        @endforeach
+      </ul>
+    </div>
+  @endif
 
-        <div class="card-body">
-          <form method="POST" action="{{ route('assignments.store') }}" enctype="multipart/form-data" id="create-form">
-            @csrf
+  <form method="POST" action="{{ route('assignments.store') }}" enctype="multipart/form-data" id="create-form">
+    @csrf
+    <div class="lg:grid lg:grid-cols-2 lg:gap-x-5">
+      <div class="mt-5 mb-2">
+        <h3 class="text-xl font-semibold">{{ __('content.subject') }}</h3>
+    
+        <hr class="my-3 dark:opacity-10 border-t-2">
 
-            <div class="form-group">
-              <label for="subject">{{ __('content.subject') }}</label>
-
-              <select name="subject" id="subject" class="form-control">
-                @foreach(\App\Subject::all() as $subject)
-                  <option value="{{ $subject->id }}">{{ __('subject.'.$subject->name) }}</option>
-                @endforeach
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="grade">{{ __('content.grade') }}</label>
-              
-              <select name="grade" id="grade" class="form-control">
-                @foreach(\App\Grade::all() as $grade)
-                  <option value="{{ $grade->id }}">{{ __('grade.'.$grade->name) }}</option>
-                @endforeach
-              </select>
-            </div>
-
-            @component('components/editor', [
-              'multilang' => Auth::user()->belongsToRoles('editor', 'admin')
-            ])
-            @endcomponent
-          </form>
-
-          @if($errors->any())
-            <div class="alert alert-danger mt-3">
-              <ul>
-                @foreach($errors->all() as $error)
-                  <li>{{ $error }}</li>
-                @endforeach
-              </ul>
-            </div>
-          @endif
-        </div>
+        <option-picker name="subject" :options="{{ json_encode(\App\Subject::all()) }}" :labels="{{ json_encode(Lang::get('subject')) }}"/>
+      </div>
+  
+      <div class="mt-5 mb-2">
+        <h3 class="text-xl font-semibold">{{ __('content.grade') }}</h3>
+    
+        <hr class="my-3 dark:opacity-10 border-t-2">
+        
+        <option-picker name="grade" :options="{{ json_encode(\App\Grade::all()) }}" :labels="{{ json_encode(Lang::get('grade')) }}"/>
       </div>
     </div>
-  </div>
+
+    @component('components/editor', [
+      'multilang' => Auth::user()->belongsToRoles('editor', 'admin')
+    ])
+    @endcomponent
+  </form>
 </div>
 @endsection
 
