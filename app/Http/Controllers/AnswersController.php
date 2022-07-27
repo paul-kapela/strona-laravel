@@ -30,7 +30,7 @@ class AnswersController extends Controller
         $grade = request('grade');
         $query = request('query');
         $user = request('user');
-        $unapproved = request('unapproved');
+        $approved = request('approved');
 
         if ($subject || $grade)
         {
@@ -80,19 +80,19 @@ class AnswersController extends Controller
             }
         }
 
-        if ($unapproved)
+        if ($approved !== null)
         {
             if ($subject || $grade || $user || $query)
             {
-                $answers = $answers->where('accepted', '=', 0);
+                $answers = $answers->where('accepted', '=', $approved);
             }
             else
             {
-                $answers = \App\Answer::where('accepted', '=', 0);
+                $answers = \App\Answer::where('accepted', '=', $approved);
             }
         }
 
-        if ($subject || $grade || $user || $query || $unapproved)
+        if ($subject || $grade || $user || $query || $approved !== null)
         {
             $answers = $answers->latest()->paginate(5);
         }

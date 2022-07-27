@@ -2,11 +2,15 @@
 
 @section('content')
 <div class="lg:col-span-2 lg:mb-0 mb-5">
-  @component('components.subject-select')
+  @component('components.subject-select', [
+    'route_base' => 'assignments'
+  ])
   @endcomponent
 
   <div class="mt-5">
-    @component('components.grade-select')
+    @component('components.grade-select', [
+      'route_base' => 'assignments'
+    ])
     @endcomponent
   </div>
 </div>

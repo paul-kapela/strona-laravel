@@ -27,7 +27,9 @@
 </div> --}}
 
 <div class="lg:col-span-2">
-  @component('components.subject-select')
+  @component('components.subject-select', [
+    'route_base' => 'assignments'
+  ])
   @endcomponent
 </div>          
 

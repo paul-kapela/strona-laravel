@@ -80,4 +80,10 @@
       
     </div>
   @endcan
+
+  @if($thumb ?? false)
+    <div class="w-full flex justify-end">
+      <a href="{{ route('answers.show', $answer) }}" class="ml-auto px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-full">{{ __('content.more') }}...</a>
+    </div>
+  @endif
 </div>

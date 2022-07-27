@@ -4,7 +4,7 @@
 
 <div class="py-2 flex lg:flex-col flex-row lg:space-x-0 space-x-3 lg:space-y-3 lg:overflow-auto overflow-x-scroll">
   @foreach(\App\Grade::all() as $grade)
-    <a href="{{ route('assignments.index', array_merge(request()->all(), [ 'grade' => $grade->name ])) }}" class="flex items-center text-xl font-semibold {{ request('grade') == $grade->name ? 'text-gray-500' : '' }}">
+    <a href="{{ route($route_base.'.index', array_merge(request()->all(), [ 'grade' => $grade->name ])) }}" class="flex items-center text-xl font-semibold {{ request('grade') == $grade->name ? 'text-gray-500' : '' }}">
       @switch($grade->name)
         @case('highschool')
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -25,7 +25,7 @@
     </a>
   @endforeach
 
-  <a href="{{ route('assignments.index', array_filter(array_merge(request()->all(), [ 'grade' => '' ]))) }}" class="flex items-center text-xl font-semibold {{ !request('grade') ? 'text-gray-500' : '' }}">
+  <a href="{{ route($route_base.'.index', array_filter(array_merge(request()->all(), [ 'grade' => '' ]))) }}" class="flex items-center text-xl font-semibold {{ !request('grade') ? 'text-gray-500' : '' }}">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
     </svg>
